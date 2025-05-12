@@ -85,9 +85,19 @@ const gameBoard = () => {
 };
 gameBoard();
 
-/*-------------------------------- Functions --------------------------------*/
-const main = () => {
-  gameBoard();
-};
+const playerAvatar = () => {
+  const chsburger = document.getElementById("chsburger");
+  const chsfries = document.getElementById("chsfries");
 
-// main();
+  chsburger.addEventListener("click", () => {
+    chsburger.style.width = "80px";
+    chsfries.style.width = "50px";
+  });
+  chsfries.addEventListener("click", () => {
+    chsfries.style.width = "80px";
+    chsburger.style.width = "50px";
+  });
+};
+playerAvatar();
+
+/*-------------------------------- Functions --------------------------------*/
