@@ -6,6 +6,11 @@ body {
     padding: 5px 10px;
 
 }
+
+#background{
+    image-rendering: auto;
+    background-size: 100%;
+}
 header {
     display: flex;
     justify-content: space-between;
