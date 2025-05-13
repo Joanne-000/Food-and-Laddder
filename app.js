@@ -3,17 +3,18 @@
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
   playerTurn: "A",
+  playerName: "Your name",
   dice: [1, 2, 3, 4, 5, 6],
   badFood: [14, 8],
   goodFood: [28, 18],
-  message: "Game start! Please select your avatar~",
+  message: "Game start! Please type your name and select your avatar~",
   isSound: true,
   isMusic: true,
   isWin: true,
 };
 
 const players = [
-  { player1: "", avatar: "", currPos: 0 },
+  { player1: "Your name", avatar: "", currPos: 0 },
   { player2: "Player Comp", avatar: "", currPos: 0 },
 ];
 
@@ -21,10 +22,17 @@ const players = [
 const board = document.getElementById("board");
 const burgerAva = document.getElementById("burger");
 const friesAva = document.getElementById("fries");
+const diceroll = document.getElementById("dice");
+const diceResult = document.getElementById("diceresult");
+const winPopup = document.getElementById("winpic");
+
+const playerNameInput = document.querySelector("#playername");
+playerNameInput.addEventListener("blur", () => {
+  game.playerName = playerNameInput.textContent;
+});
+console.log(game.playerName);
 
 /*----------------------------- Event Listeners -----------------------------*/
-
-/*---------------------------- Render Functions --------------------------------*/
 const rows = () => {
   for (let i = 0; i < 6; i++) {
     let rowNum = "row" + i;
@@ -91,13 +99,106 @@ const playerAvatar = () => {
 
   chsburger.addEventListener("click", () => {
     chsburger.style.width = "80px";
-    chsfries.style.width = "50px";
+    chsfries.style.width = "40px";
+    // game.playerName = playerNameInput;
+    game.message = "Hey " + game.playerName + ", you choose Burger Man.";
+    renderMessage();
   });
   chsfries.addEventListener("click", () => {
     chsfries.style.width = "80px";
-    chsburger.style.width = "50px";
+    chsburger.style.width = "40px";
+    // game.playerName = playerNameInput;
+    game.message = "Hey " + game.playerName + ", you choose Fries Man.";
+    renderMessage();
   });
 };
 playerAvatar();
 
+const dice = () => {
+  diceroll.addEventListener("click", () => {
+    let result = Math.floor(Math.random() * 6) + 1;
+
+    let picDice = "./pictures/dice0" + result + ".jpg";
+    let picDiceAlt = result + " dot";
+
+    diceResult.setAttribute("src", picDice);
+    diceResult.setAttribute("alt", picDiceAlt);
+    console.log(diceResult);
+  });
+};
+
+dice();
+/*---------------------------- Render Functions --------------------------------*/
+const renderRotten = () => {
+  const message = document.getElementById("messagesplace");
+  message.textContent = game.message;
+  console.log(winPopup);
+
+  winPopup.setAttribute("src", "/_bun/asset/0fda551cd5770e0a.png");
+  winPopup.setAttribute("alt", "You win!");
+};
+
+// renderWin();
+
+const renderWin = () => {
+  const message = document.getElementById("messagesplace");
+  message.textContent = game.message;
+  console.log(winPopup);
+
+  winPopup.setAttribute("src", "pictureswin2.png");
+  winPopup.setAttribute("alt", "You win!");
+};
+
+// renderWin();
+
+const renderMessage = () => {
+  const message = document.getElementById("messagesplace");
+  message.textContent = game.message;
+};
+
+renderMessage();
 /*-------------------------------- Functions --------------------------------*/
+
+// if (result === 1) {
+//   dice1();
+// }
+// if (result === 2) {
+//   dice2();
+// }
+// if (result === 3) {
+//   dice3();
+// }
+// if (result === 4) {
+//   dice4();
+// }
+// if (result === 5) {
+//   dice5();
+// }
+// if (result === 6) {
+//   dice6();
+// }
+
+// const dice1 = () => {
+//   diceresult.setAttribute("src", "pictures/dice01.jpg");
+//   diceresult.setAttribute("alt", "1 dot");
+// };
+// const dice2 = () => {
+//   diceresult.setAttribute("src", "pictures/dice02.jpg");
+//   diceresult.setAttribute("alt", "2 dot");
+// };
+// const dice3 = () => {
+//   diceresult.setAttribute("src", "pictures/dice03.jpg");
+//   diceresult.setAttribute("alt", "3 dot");
+// };
+// const dice4 = () => {
+//   diceresult.setAttribute("src", "pictures/dice04.jpg");
+//   diceresult.setAttribute("alt", "4 dot");
+// };
+// const dice5 = () => {
+//   diceresult.setAttribute("src", "pictures/dice05.jpg");
+//   diceresult.setAttribute("alt", "5 dot");
+// };
+// const dice6 = () => {
+//   diceresult.setAttribute("src", "pictures/dice06.jpg");
+//   diceresult.setAttribute("alt", "6 dot");
+// };

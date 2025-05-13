@@ -1,4 +1,4 @@
-# Developing a Game - Snake and Ladder
+# Developing a Game - Foods and Ladder
 
 ## Project Brief
 
