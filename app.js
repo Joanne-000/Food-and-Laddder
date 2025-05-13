@@ -1,12 +1,17 @@
+// import assert from "node:assert";
+
 /*-------------------------------- Constants --------------------------------*/
 
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
-  playerTurn: "A",
-  playerName: "Your name",
+  players: 2,
+  playerTurn: "",
+  difficultyLevel: [0, 1, 2], // extract level here
   dice: [1, 2, 3, 4, 5, 6],
-  badFood: [14, 8],
-  goodFood: [28, 18],
+  badFood: [14],
+  toilet: [], // do separate array for the badfood and toilet
+  goodFood: [18],
+  ladder: [], // do separate array for the goodfood and ladder
   message: "Game start! Please type your name and select your avatar~",
   isSound: true,
   isMusic: true,
@@ -14,8 +19,8 @@ const game = {
 };
 
 const players = [
-  { player1: "Your name", avatar: "", currPos: 0 },
-  { player2: "Player Comp", avatar: "", currPos: 0 },
+  { player: "Your name", avatar: "", currPos: 0 },
+  { player: "Computer", avatar: "", currPos: 0 },
 ];
 
 /*------------------------ Cached Element References ------------------------*/
@@ -26,11 +31,12 @@ const diceroll = document.getElementById("dice");
 const diceResult = document.getElementById("diceresult");
 const winPopup = document.getElementById("winpic");
 
+// input couldnt work
 const playerNameInput = document.querySelector("#playername");
 playerNameInput.addEventListener("blur", () => {
-  game.playerName = playerNameInput.textContent;
+  players[0].player = playerNameInput.value;
 });
-console.log(game.playerName);
+// console.log(playerNameInput.value);
 
 /*----------------------------- Event Listeners -----------------------------*/
 const rows = () => {
@@ -101,14 +107,23 @@ const playerAvatar = () => {
     chsburger.style.width = "80px";
     chsfries.style.width = "40px";
     // game.playerName = playerNameInput;
-    game.message = "Hey " + game.playerName + ", you choose Burger Man.";
+    players[0].avatar = "Burgerman";
+    players[1].avatar = "Friesman";
+
+    game.message =
+      "Hey " + players[0].player + ", you choose Burger Man. You go first.";
+    game.playerTurn = players[0].player;
     renderMessage();
   });
   chsfries.addEventListener("click", () => {
     chsfries.style.width = "80px";
     chsburger.style.width = "40px";
     // game.playerName = playerNameInput;
-    game.message = "Hey " + game.playerName + ", you choose Fries Man.";
+    players[0].avatar = "Friesman";
+    players[1].avatar = "Burgerman";
+    game.message =
+      "Hey " + players[0].player + ", you choose Fries Man. You go first.";
+    game.playerTurn = players[0].player;
     renderMessage();
   });
 };
@@ -123,7 +138,22 @@ const dice = () => {
 
     diceResult.setAttribute("src", picDice);
     diceResult.setAttribute("alt", picDiceAlt);
-    console.log(diceResult);
+    // console.log(game.playerTurn);
+    // console.log(players[0].player);
+
+    if (game.playerTurn === players[0].player) {
+      game.playerTurn = players[1].player;
+      console.log(game.playerTurn);
+      game.message = "It's " + game.playerTurn + " turn!";
+      renderWin();
+    } else if (game.playerTurn === players[1].player) {
+      game.playerTurn = players[0].player;
+      console.log(game.playerTurn);
+      game.message = "It's " + game.playerTurn + " turn!";
+      renderWin();
+      console.log("player2", game.message);
+      return game.playerTurn;
+    }
   });
 };
 
@@ -145,11 +175,11 @@ const renderWin = () => {
   message.textContent = game.message;
   console.log(winPopup);
 
-  winPopup.setAttribute("src", "pictureswin2.png");
+  winPopup.setAttribute("src", "./pictureswin2.png");
   winPopup.setAttribute("alt", "You win!");
 };
 
-// renderWin();
+renderWin();
 
 const renderMessage = () => {
   const message = document.getElementById("messagesplace");
