@@ -138,20 +138,20 @@ const dice = () => {
 
     diceResult.setAttribute("src", picDice);
     diceResult.setAttribute("alt", picDiceAlt);
-    // console.log(game.playerTurn);
-    // console.log(players[0].player);
+
+    // let currPos = player[i].currPos
 
     if (game.playerTurn === players[0].player) {
+      player[0].currPos += result;
       game.playerTurn = players[1].player;
-      console.log(game.playerTurn);
       game.message = "It's " + game.playerTurn + " turn!";
+
       renderWin();
     } else if (game.playerTurn === players[1].player) {
+      player[1].currPos += result;
       game.playerTurn = players[0].player;
-      console.log(game.playerTurn);
       game.message = "It's " + game.playerTurn + " turn!";
       renderWin();
-      console.log("player2", game.message);
       return game.playerTurn;
     }
   });
