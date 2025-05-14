@@ -5,6 +5,7 @@
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
   players: 2,
+  avatar: ["Burgerman", "Friesman"],
   playerTurn: "",
   difficultyLevel: [0, 1, 2], // extract level here
   dice: [1, 2, 3, 4, 5, 6],
@@ -12,15 +13,16 @@ const game = {
   toilet: [], // do separate array for the badfood and toilet
   goodFood: [18],
   ladder: [], // do separate array for the goodfood and ladder
-  message: "Game start! Please type your name and select your avatar~",
+  message:
+    "Game start! Please type your name and Player 1 to select your avatar~",
   isSound: true,
   isMusic: true,
   isWin: true,
 };
 
 const players = [
-  { player: "Your name", avatar: "", currPos: 0 },
-  { player: "Computer", avatar: "", currPos: 0 },
+  { player: "Player 1", avatar: "", currPos: 0 },
+  { player: "Player 2", avatar: "", currPos: 0 },
 ];
 
 /*------------------------ Cached Element References ------------------------*/
@@ -28,17 +30,53 @@ const board = document.getElementById("board");
 const burgerAva = document.getElementById("burger");
 const friesAva = document.getElementById("fries");
 const diceroll = document.getElementById("dice");
+const message = document.getElementById("messagesplace");
 const diceResult = document.getElementById("diceresult");
-const winPopup = document.getElementById("winpic");
-
-// input couldnt work
-const playerNameInput = document.querySelector("#playername");
-playerNameInput.addEventListener("blur", () => {
-  players[0].player = playerNameInput.value;
-});
-// console.log(playerNameInput.value);
+const playersName = document.getElementById("input");
+const nameSubmit = document.getElementById("playersubmit");
 
 /*----------------------------- Event Listeners -----------------------------*/
+// const playerNameInput = () => {
+//   nameSubmit.addEventListener("click", () => {
+//     for (let i = 0; i < game.players; i++) {
+//       let playerNo = i + 1;
+//       let playerID = "P" + playerNo;
+//       let playerName = document.getElementById(playerID).value;
+//       if (playerName != "") {
+//         players[i].player = playerName;
+//       } else {
+//         players[i].player = "Player " + playerNo;
+//       }
+//     }
+//     // return;
+//   });
+// };
+const playerNumber = () => {
+  for (let i = 2; i < game.players; i++) {
+    if ((i = 3)) {
+      game.avatar.push("Pizzaman");
+      players.push({ player: "Player " + i, avatar: "", currPos: 0 });
+    }
+
+    if ((i = 4)) {
+      game.avatar.push("Pizzaman");
+      players.push({ player: "Player " + i, avatar: "", currPos: 0 });
+    }
+  }
+};
+const playerNameInput = () => {
+  for (let i = 0; i < game.players; i++) {
+    let playerNo = i + 1;
+    let playerID = "P" + playerNo;
+
+    let playerName = document.getElementById(playerID);
+
+    playerName.addEventListener("change", (event) => {
+      players[i].player = event.target.value;
+    });
+  }
+};
+
 const rows = () => {
   for (let i = 0; i < 6; i++) {
     let rowNum = "row" + i;
@@ -89,7 +127,6 @@ const gameBoard = () => {
     } else {
       const newSqr = document.createElement("div");
       const row6 = document.querySelector(".row6");
-
       row6.appendChild(newSqr);
       const boxName = i + 1;
       newSqr.classList.add("square");
@@ -98,6 +135,7 @@ const gameBoard = () => {
   }
 };
 gameBoard();
+playerNameInput();
 
 const playerAvatar = () => {
   const chsburger = document.getElementById("chsburger");
@@ -110,24 +148,69 @@ const playerAvatar = () => {
     players[0].avatar = "Burgerman";
     players[1].avatar = "Friesman";
 
-    game.message =
-      "Hey " + players[0].player + ", you choose Burger Man. You go first.";
+    document.querySelector(".burger").textContent = players[0].player;
+    document.querySelector(".fries").textContent = players[1].player;
+
     game.playerTurn = players[0].player;
+    game.message =
+      "Hey " + players[0].player + ", you choose Burger Man. You roll first.";
+    // console.log(players[0].player);
+    // console.log(players[0].avatar);
+    // console.log(game.playerTurn);
+    // console.log(game.message);
+    // console.log(game, players);
     renderMessage();
+
+    return;
   });
+
   chsfries.addEventListener("click", () => {
     chsfries.style.width = "80px";
     chsburger.style.width = "40px";
     // game.playerName = playerNameInput;
     players[0].avatar = "Friesman";
     players[1].avatar = "Burgerman";
-    game.message =
-      "Hey " + players[0].player + ", you choose Fries Man. You go first.";
+
+    document.querySelector(".fries").textContent = players[0].player;
+    document.querySelector(".burger").textContent = players[1].player;
+
     game.playerTurn = players[0].player;
+    game.message =
+      "Hey " + players[0].player + ", you choose Fries Man. You roll first.";
+    // console.log(players[0].player);
+    // console.log(players[0].avatar);
+    // console.log(game.playerTurn);
+    // console.log(game.message);
+    // console.log(game, players);
     renderMessage();
   });
+  return;
 };
 playerAvatar();
+
+const posTurnUpdate = (result) => {
+  if (game.playerTurn === players[0].player) {
+    players[0].currPos += result;
+    game.playerTurn = players[1].player;
+    game.message = "It's " + game.playerTurn + " turn!";
+    renderMessage();
+
+    // console.log(players[0].currPos);
+    // console.log(game.playerTurn);
+    // console.log(game.message);
+    // console.log(game, players);
+  } else if (game.playerTurn === players[1].player) {
+    players[1].currPos = players[1].currPos + result;
+    game.playerTurn = players[0].player;
+    game.message = "It's " + game.playerTurn + " turn!";
+    renderMessage();
+
+    // console.log(players[1].currPos);
+    // console.log(game.playerTurn);
+    // console.log(game.message);
+    // console.log(game, players);
+  }
+};
 
 const dice = () => {
   diceroll.addEventListener("click", () => {
@@ -140,49 +223,55 @@ const dice = () => {
     diceResult.setAttribute("alt", picDiceAlt);
 
     // let currPos = player[i].currPos
-
-    if (game.playerTurn === players[0].player) {
-      player[0].currPos += result;
-      game.playerTurn = players[1].player;
-      game.message = "It's " + game.playerTurn + " turn!";
-
-      renderWin();
-    } else if (game.playerTurn === players[1].player) {
-      player[1].currPos += result;
-      game.playerTurn = players[0].player;
-      game.message = "It's " + game.playerTurn + " turn!";
-      renderWin();
-      return game.playerTurn;
-    }
+    posTurnUpdate(result);
   });
 };
 
 dice();
 /*---------------------------- Render Functions --------------------------------*/
 const renderRotten = () => {
-  const message = document.getElementById("messagesplace");
-  message.textContent = game.message;
-  console.log(winPopup);
-
-  winPopup.setAttribute("src", "/_bun/asset/0fda551cd5770e0a.png");
-  winPopup.setAttribute("alt", "You win!");
+  winPopup.setAttribute("src", "");
+  winPopup.setAttribute("alt", "Rotten food");
 };
 
-// renderWin();
+// renderRotten();
+
+//   const currAvatar = () => {
+//     let boardBox = document.querySelector(".board");
+
+//     if (boardBox.textContent === player[0].currPos) {
+//       let currAvatarOnBoard = document.createElement("img");
+//       currAvatarOnBoard.classList.add("boardAvatar");
+//       newSqr.appendChild(currAvatarOnBoard);
+//       if (player[0].avatar === "Friesman") {
+//         currAvatarOnBoard.setAttribute("src", "pictures\fries_sunglass.png");
+//       } else {
+//         currAvatarOnBoard.setAttribute("src", "pictures/burger.png");
+//       }
+//     }
+//   };
+//   currAvatar();
+
+//   const renderAvatar = () => {
+//     const boardBox = document.getElementById("board");
+//   };
+
+//   winPopup.setAttribute("src", "");
+//   winPopup.setAttribute("alt", "Rotten food");
+// };
 
 const renderWin = () => {
-  const message = document.getElementById("messagesplace");
+  const winPopup = document.getElementById("winpic");
+  game.message = game.playerTurn + " WIN!!!";
   message.textContent = game.message;
-  console.log(winPopup);
 
   winPopup.setAttribute("src", "./pictureswin2.png");
   winPopup.setAttribute("alt", "You win!");
 };
 
-renderWin();
+// renderWin();
 
 const renderMessage = () => {
-  const message = document.getElementById("messagesplace");
   message.textContent = game.message;
 };
 
