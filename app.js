@@ -251,7 +251,7 @@ const renderRotten = () => {
   game.toilet.push(toiletPos);
   let toiletBox = document.getElementById(toiletPos);
   let toiletOnBoard = document.createElement("img");
-  toiletOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
+  toiletOnBoard.setAttribute("src", "pictures/toiletbowl.png");
   toiletOnBoard.setAttribute("alt", "Toilet");
   toiletOnBoard.setAttribute("id", "Toilet");
   toiletOnBoard.classList.add("foods");
@@ -277,7 +277,7 @@ const renderChick = () => {
   game.ladder.push(ladderPos);
   let ladderBox = document.getElementById(ladderPos);
   let ladderOnBoard = document.createElement("img");
-  ladderOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
+  ladderOnBoard.setAttribute("src", "pictures/powerup.png");
   ladderOnBoard.setAttribute("alt", "Ladder");
   ladderOnBoard.setAttribute("id", "Ladder");
   ladderOnBoard.classList.add("foods");
