@@ -191,81 +191,45 @@ const dice = () => {
 };
 dice();
 
-// const posUpdate = (playerPos) => {
-//   if (playerPos === game.rotten) {
-//     playerPos = game.toilet;
-//   } else if (playerPos === game.chicken) {
-//     playerPos = game.ladder;
-//   } else {
-//     playerPos += result;
-//   }
+const posUpdate = (player, result) => {
+  player.currPos += result;
 
-//   console.log("posUpdate", playerPos);
-// };
+  if (player.currPos === game.rotten[0]) {
+    player.currPos = game.toilet[0];
+  } else if (player.currPos === game.chicken[0]) {
+    player.currPos = game.ladder[0];
+  }
+};
 
-// const avatarUpdate = (playerAva, playerPos) => {
-//   if (playerAva === "Burgerman") {
-//     renderBurger(playerPos, playerAva);
-//   } else if (playerAva === "Friesman") {
-//     renderFries(playerPos, playerAva);
-//   }
-//   console.log("avaUpdate", playerPos);
-// };
+const avatarUpdate = (playerAva, playerPos) => {
+  if (playerAva === "Burgerman") {
+    renderBurger(playerPos, playerAva);
+  } else if (playerAva === "Friesman") {
+    renderFries(playerPos, playerAva);
+  }
+  console.log("avaUpdate", playerPos);
+};
 
 const posTurnUpdate = (result) => {
   if (game.playerTurn === players[0].player) {
-    // if (playerPos === game.rotten[0]) {
-    //   playerPos = game.toilet[0];
-    // } else if (playerPos === game.chicken[0]) {
-    //   playerPos = game.ladder[0];
-    // } else {
-    //   console.log("result P1", result);
-
-    //   playerPos += result;
-    // }
-    // posUpdate(playerPos);
-    players[0].currPos += result;
-    console.log("result", result);
+    posUpdate(players[0], result);
     game.playerTurn = players[1].player;
     game.message = "It's " + game.playerTurn + " turn!";
 
     let playerPos = players[0].currPos;
     let playerAva = players[0].avatar;
 
-    if (playerAva === "Burgerman") {
-      renderBurger(playerPos, playerAva);
-    } else if (playerAva === "Friesman") {
-      renderFries(playerPos, playerAva);
-    }
-    // avatarUpdate(playerAva, playerPos);
-
+    avatarUpdate(playerAva, playerPos);
     renderMessage();
   } else if (game.playerTurn === players[1].player) {
-    players[1].currPos += result;
-
-    // if (playerPos === game.rotten[0]) {
-    //   playerPos = game.toilet[0];
-    // } else if (playerPos === game.chicken[0]) {
-    //   playerPos = game.ladder[0];
-    // } else {
-    //   playerPos += result;
-    // }
-    // posUpdate(playerPos);
-    console.log("result P2", result);
-
+    posUpdate(players[1], result);
     game.playerTurn = players[0].player;
     game.message = "It's " + game.playerTurn + " turn!";
 
     let playerPos = players[1].currPos;
     let playerAva = players[1].avatar;
 
-    if (playerAva === "Burgerman") {
-      renderBurger(playerPos, playerAva);
-    } else if (playerAva === "Friesman") {
-      renderFries(playerPos, playerAva);
-    }
-    // avatarUpdate(playerAva, playerPos);
-
+    avatarUpdate(playerAva, playerPos);
     renderMessage();
   }
 };
