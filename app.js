@@ -1,7 +1,5 @@
 // import assert from "node:assert";
 
-/*-------------------------------- Constants --------------------------------*/
-
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
   players: 2,
@@ -24,6 +22,10 @@ const players = [
   { player: "Player 1", avatar: "", prevPos: 0, currPos: 0 },
   { player: "Player 2", avatar: "", prevPos: 0, currPos: 0 },
 ];
+/*-------------
+------------------- Constants --------------------------------*/
+const player1 = players[0];
+const player2 = players[1];
 
 /*------------------------ Cached Element References ------------------------*/
 const board = document.getElementById("board");
@@ -90,7 +92,7 @@ const playerNameInput = () => {
   }
 };
 
-const rows = () => {
+const rows6 = () => {
   for (let i = 0; i < 6; i++) {
     let rowNum = "row" + i;
     let row = document.createElement("div");
@@ -98,7 +100,7 @@ const rows = () => {
     board.prepend(row);
   }
 };
-rows();
+rows6();
 
 const gameBoardEasy = () => {
   for (let i = 0; i < 30; i++) {
@@ -163,16 +165,15 @@ const playerAvatar = () => {
   chsburger.addEventListener("click", () => {
     chsburger.style.width = "80px";
     chsfries.style.width = "40px";
-    // game.playerName = playerNameInput;
-    players[0].avatar = "Burgerman";
-    players[1].avatar = "Friesman";
+    player1.avatar = "Burgerman";
+    player2.avatar = "Friesman";
 
-    document.querySelector(".burger").textContent = players[0].player;
-    document.querySelector(".fries").textContent = players[1].player;
+    document.querySelector(".burger").textContent = player1.player;
+    document.querySelector(".fries").textContent = player2.player;
 
-    game.playerTurn = players[0].player;
+    game.playerTurn = player1.player;
     game.message =
-      "Hey " + players[0].player + ", you choose Burger Man. You roll first.";
+      "Hey " + player1.player + ", you choose Burger Man. You roll first.";
     renderMessage();
     return;
   });
@@ -180,16 +181,15 @@ const playerAvatar = () => {
   chsfries.addEventListener("click", () => {
     chsfries.style.width = "80px";
     chsburger.style.width = "40px";
-    // game.playerName = playerNameInput;
-    players[0].avatar = "Friesman";
-    players[1].avatar = "Burgerman";
+    player1.avatar = "Friesman";
+    player2.avatar = "Burgerman";
 
-    document.querySelector(".fries").textContent = players[0].player;
-    document.querySelector(".burger").textContent = players[1].player;
+    document.querySelector(".fries").textContent = player1.player;
+    document.querySelector(".burger").textContent = player2.player;
 
-    game.playerTurn = players[0].player;
+    game.playerTurn = player1.player;
     game.message =
-      "Hey " + players[0].player + ", you choose Fries Man. You roll first.";
+      "Hey " + player1.player + ", you choose Fries Man. You roll first.";
     renderMessage();
     return;
   });
@@ -197,48 +197,38 @@ const playerAvatar = () => {
 playerAvatar();
 
 const posTurnUpdate = (result) => {
-  const player1 = players[0];
-  const player2 = players[1];
-
   if (game.playerTurn === player1.player) {
     player1.currPos += result;
     game.playerTurn = player2.player;
     game.message = "It's " + game.playerTurn + " turn!";
-    // let currBox = document.getElementById(players[0].currPos)
 
     let currentPos = player1.currPos;
+    let prevAva = player1.avatar;
+
     if (player1.avatar === "Burgerman") {
-      burgerAva.style.display = "none";
       renderBurger(currentPos);
     } else if (player1.avatar === "Friesman") {
       renderFries(currentPos);
     }
-    renderMessage();
+    // removePrevRender(currentPos, prevAva);
 
-    // console.log(players[0].currPos);
-    // console.log(game.playerTurn);
-    // console.log(game.message);
-    // console.log(game, players);
+    renderMessage();
   } else if (game.playerTurn === player2.player) {
     player2.currPos = player2.currPos + result;
     game.playerTurn = player1.player;
     game.message = "It's " + game.playerTurn + " turn!";
 
     let currentPos = player2.currPos;
+    let prevAva = player2.avatar;
+
     if (player2.avatar === "Burgerman") {
-      burgerAva.style.display = "none";
       renderBurger(currentPos);
     } else if (player1.avatar === "Friesman") {
-      friesAva.style.display = "none";
       renderFries(currentPos);
     }
+    // removePrevRender(currentPos, prevAva);
 
     renderMessage();
-
-    // console.log(players[1].currPos);
-    // console.log(game.playerTurn);
-    // console.log(game.message);
-    // console.log(game, players);
   }
 };
 
@@ -246,6 +236,9 @@ const posTurnUpdate = (result) => {
 
 const dice = () => {
   diceroll.addEventListener("click", () => {
+    // if (currentPos !== 0) {
+    //   let prevPos = currentPos;
+    // }
     let result = Math.floor(Math.random() * 6) + 1;
 
     let picDice = "./pictures/dice0" + result + ".jpg";
@@ -254,7 +247,6 @@ const dice = () => {
     diceResult.setAttribute("src", picDice);
     diceResult.setAttribute("alt", picDiceAlt);
 
-    // let currPos = player[i].currPos
     posTurnUpdate(result);
   });
 };
@@ -265,82 +257,6 @@ const renderRotten = () => {
   winPopup.setAttribute("src", "");
   winPopup.setAttribute("alt", "Rotten food");
 };
-if (players[0].avatar === "Burgerman") {
-}
-const renderBurger = (currentPos) => {
-  let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/burger.png");
-  currAvaOnBoard.setAttribute("alt", "Burgerman");
-  currAvaOnBoard.classList.add("avatar");
-  let currBox = document.getElementById(currentPos);
-  currBox.appendChild(currAvaOnBoard);
-};
-const renderFries = (currentPos) => {
-  let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/fries_sunglass.png");
-  currAvaOnBoard.setAttribute("alt", "Friesman");
-  currAvaOnBoard.classList.add("avatar");
-  let currBox = document.getElementById(currentPos);
-  currBox.appendChild(currAvaOnBoard);
-};
-// renderRotten();
-let boardBoxes = document.querySelectorAll(".square");
-
-// const currAva = () => {
-//   //   if (game.difficultyLevel === "easy") {
-//   // let currBox = document.getElementById(players[j].currPos);
-//   for (let i = 0; i < 30; i++) {
-//     if (Number(boardBoxes[i].textContent) === players[j].currPos) {
-//       // boardBoxes[i].textContent = "testing";
-//       // if (players[j].currPos !== 0) {
-//       //     players[j].prevPos = players[j].currPos
-//       // }
-//       if (players[0].avatar === "Burgerman") {
-//         burgerAva.style.display = "none";
-//         renderBurger(j);
-//         break;
-//       } else if (players[0].avatar === "Friesman") {
-//         friesAva.style.display = "none";
-//         renderFries(j);
-//         break;
-//       }
-//     }
-//   }
-
-//   //   }
-// };
-// console.log(game.difficultyLevel);
-// console.log(game.players);
-
-// console.log(players);
-console.log(boardBoxes);
-
-// console.log(players[0].currPos);
-// console.log(players[1].currPos);
-
-//   const currAvatar = () => {
-//     let boardBox = document.querySelector(".board");
-
-//     if (boardBox.textContent === player[0].currPos) {
-//       let currAvatarOnBoard = document.createElement("img");
-//       currAvatarOnBoard.classList.add("boardAvatar");
-//       newSqr.appendChild(currAvatarOnBoard);
-//       if (player[0].avatar === "Friesman") {
-//         currAvatarOnBoard.setAttribute("src", "pictures\fries_sunglass.png");
-//       } else {
-//         currAvatarOnBoard.setAttribute("src", "pictures/burger.png");
-//       }
-//     }
-//   };
-//   currAvatar();
-
-//   const renderAvatar = () => {
-//     const boardBox = document.getElementById("board");
-//   };
-
-//   winPopup.setAttribute("src", "");
-//   winPopup.setAttribute("alt", "Rotten food");
-// };
 
 const renderWin = () => {
   const winPopup = document.getElementById("winpic");
@@ -351,7 +267,72 @@ const renderWin = () => {
   winPopup.setAttribute("alt", "You win!");
 };
 
-// renderWin();
+// const removePrevRender = (currentPos,prevAva) => {
+//   if (currentPos === 0) {
+//     return;
+//   } else {
+//     for (let i = 0; i < currentPos; i++) {
+//       let checkPrevBox = document.getElementById(i);
+//       checkPrevBox.getAttribute(prevAva);
+//       checkPrevBox.remove("img");
+//     }
+//   }
+// };
+
+const removePrevRender = (currentPos, prevAva) => {
+  if (currentPos === 0) {
+    return;
+  } else {
+    for (let i = 0; i < currentPos; i++) {
+      let idNum = i + 1;
+
+      let checkPrevBox = document.getElementById(idNum);
+      let altText = checkPrevBox.getAttribute("alt");
+
+      if ((altText = prevAva)) {
+        checkPrevBox.removeAttribute("src");
+        checkPrevBox.removeAttribute("alt");
+        checkPrevBox.removeAttribute("class");
+      } else {
+        return;
+      }
+    }
+  }
+};
+
+const renderBurger = (currentPos) => {
+  burgerAva.style.display = "none";
+  let currAvaOnBoard = document.createElement("img");
+  currAvaOnBoard.setAttribute("src", "pictures/burger.png");
+  currAvaOnBoard.setAttribute("alt", "Burgerman");
+  currAvaOnBoard.classList.add("avatar");
+  let currBox = document.getElementById(currentPos);
+  if (currentPos <= 30) {
+    let currBox = document.getElementById(currentPos);
+    currBox.appendChild(currAvaOnBoard);
+  } else {
+    let currBox = document.getElementById("30");
+    currBox.appendChild(currAvaOnBoard);
+    renderWin();
+  }
+  //   removePrevRender(currentPos);
+};
+
+const renderFries = (currentPos) => {
+  friesAva.style.display = "none";
+  let currAvaOnBoard = document.createElement("img");
+  currAvaOnBoard.setAttribute("src", "pictures/fries_sunglass.png");
+  currAvaOnBoard.setAttribute("alt", "Friesman");
+  currAvaOnBoard.classList.add("avatar");
+  if (currentPos <= 30) {
+    let currBox = document.getElementById(currentPos);
+    currBox.appendChild(currAvaOnBoard);
+  } else {
+    let currBox = document.getElementById("30");
+    currBox.appendChild(currAvaOnBoard);
+    renderWin();
+  }
+};
 
 const renderMessage = () => {
   message.textContent = game.message;
@@ -403,3 +384,5 @@ renderMessage();
 //   diceresult.setAttribute("src", "pictures/dice06.jpg");
 //   diceresult.setAttribute("alt", "6 dot");
 // };
+
+const main = () => {};
