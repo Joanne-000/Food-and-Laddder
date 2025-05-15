@@ -3,15 +3,14 @@
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
   players: 2,
-  diceRoll: 0,
   avatar: ["Burgerman", "Friesman"],
   playerTurn: "",
   difficultyLevel: "easy",
   boxNumber: 30, // extract level here
-  dice: [1, 2, 3, 4, 5, 6],
-  badFood: [14],
+  diceRoll: 0,
+  rotten: [],
   toilet: [], // do separate array for the badfood and toilet
-  goodFood: [18],
+  chicken: [],
   ladder: [], // do separate array for the goodfood and ladder
   message:
     "Game start! Please type your name and Player 1 to select your avatar~",
@@ -26,9 +25,6 @@ const players = [
 ];
 /*-------------
 ------------------- Constants --------------------------------*/
-const player1 = players[0];
-const player2 = players[1];
-
 /*------------------------ Cached Element References ------------------------*/
 const boardEasy = document.getElementById("boardEasy");
 const burgerAva = document.getElementById("burger");
@@ -153,13 +149,13 @@ const playerAvatar = () => {
   chsburger.addEventListener("click", () => {
     chsburger.style.width = "80px";
     chsfries.style.width = "40px";
-    player1.avatar = "Burgerman";
-    player2.avatar = "Friesman";
-    document.querySelector(".burger").textContent = player1.player;
-    document.querySelector(".fries").textContent = player2.player;
-    game.playerTurn = player1.player;
+    players[0].avatar = "Burgerman";
+    players[1].avatar = "Friesman";
+    document.querySelector(".burger").textContent = players[0].player;
+    document.querySelector(".fries").textContent = players[1].player;
+    game.playerTurn = players[0].player;
     game.message =
-      "Hey " + player1.player + ", you choose Burger Man. You roll first.";
+      "Hey " + players[0].player + ", you choose Burger Man. You roll first.";
     renderMessage();
     return;
   });
@@ -167,13 +163,13 @@ const playerAvatar = () => {
   chsfries.addEventListener("click", () => {
     chsfries.style.width = "80px";
     chsburger.style.width = "40px";
-    player1.avatar = "Friesman";
-    player2.avatar = "Burgerman";
-    document.querySelector(".fries").textContent = player1.player;
-    document.querySelector(".burger").textContent = player2.player;
-    game.playerTurn = player1.player;
+    players[0].avatar = "Friesman";
+    players[1].avatar = "Burgerman";
+    document.querySelector(".fries").textContent = players[0].player;
+    document.querySelector(".burger").textContent = players[1].player;
+    game.playerTurn = players[0].player;
     game.message =
-      "Hey " + player1.player + ", you choose Fries Man. You roll first.";
+      "Hey " + players[0].player + ", you choose Fries Man. You roll first.";
     renderMessage();
     return;
   });
@@ -188,37 +184,88 @@ const dice = () => {
     let picDiceAlt = result + " dot";
     diceResult.setAttribute("src", picDice);
     diceResult.setAttribute("alt", picDiceAlt);
+
     posTurnUpdate(result);
     game.diceRoll += 1;
   });
 };
 dice();
 
+// const posUpdate = (playerPos) => {
+//   if (playerPos === game.rotten) {
+//     playerPos = game.toilet;
+//   } else if (playerPos === game.chicken) {
+//     playerPos = game.ladder;
+//   } else {
+//     playerPos += result;
+//   }
+
+//   console.log("posUpdate", playerPos);
+// };
+
+// const avatarUpdate = (playerAva, playerPos) => {
+//   if (playerAva === "Burgerman") {
+//     renderBurger(playerPos, playerAva);
+//   } else if (playerAva === "Friesman") {
+//     renderFries(playerPos, playerAva);
+//   }
+//   console.log("avaUpdate", playerPos);
+// };
+
 const posTurnUpdate = (result) => {
-  if (game.playerTurn === player1.player) {
-    player1.currPos += result;
-    game.playerTurn = player2.player;
+  if (game.playerTurn === players[0].player) {
+    // if (playerPos === game.rotten[0]) {
+    //   playerPos = game.toilet[0];
+    // } else if (playerPos === game.chicken[0]) {
+    //   playerPos = game.ladder[0];
+    // } else {
+    //   console.log("result P1", result);
+
+    //   playerPos += result;
+    // }
+    // posUpdate(playerPos);
+    players[0].currPos += result;
+    console.log("result", result);
+    game.playerTurn = players[1].player;
     game.message = "It's " + game.playerTurn + " turn!";
-    let currentPos = player1.currPos;
-    let prevAva = player1.avatar;
-    if (player1.avatar === "Burgerman") {
-      renderBurger(currentPos, prevAva);
-    } else if (player1.avatar === "Friesman") {
-      renderFries(currentPos, prevAva);
+
+    let playerPos = players[0].currPos;
+    let playerAva = players[0].avatar;
+
+    if (playerAva === "Burgerman") {
+      renderBurger(playerPos, playerAva);
+    } else if (playerAva === "Friesman") {
+      renderFries(playerPos, playerAva);
     }
+    // avatarUpdate(playerAva, playerPos);
 
     renderMessage();
-  } else if (game.playerTurn === player2.player) {
-    player2.currPos = player2.currPos + result;
-    game.playerTurn = player1.player;
+  } else if (game.playerTurn === players[1].player) {
+    players[1].currPos += result;
+
+    // if (playerPos === game.rotten[0]) {
+    //   playerPos = game.toilet[0];
+    // } else if (playerPos === game.chicken[0]) {
+    //   playerPos = game.ladder[0];
+    // } else {
+    //   playerPos += result;
+    // }
+    // posUpdate(playerPos);
+    console.log("result P2", result);
+
+    game.playerTurn = players[0].player;
     game.message = "It's " + game.playerTurn + " turn!";
-    let currentPos = player2.currPos;
-    let prevAva = player2.avatar;
-    if (player2.avatar === "Burgerman") {
-      renderBurger(currentPos, prevAva);
-    } else if (player1.avatar === "Friesman") {
-      renderFries(currentPos, prevAva);
+
+    let playerPos = players[1].currPos;
+    let playerAva = players[1].avatar;
+
+    if (playerAva === "Burgerman") {
+      renderBurger(playerPos, playerAva);
+    } else if (playerAva === "Friesman") {
+      renderFries(playerPos, playerAva);
     }
+    // avatarUpdate(playerAva, playerPos);
+
     renderMessage();
   }
 };
@@ -227,6 +274,7 @@ const renderRotten = () => {
   let min = 10;
   let max = game.boxNumber - 10;
   let rottenPos = Math.floor(Math.random() * (max - min + 1)) + min;
+  game.rotten.push(rottenPos);
   let rottenBox = document.getElementById(rottenPos);
   let rottenOnBoard = document.createElement("img");
   rottenOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
@@ -236,6 +284,7 @@ const renderRotten = () => {
   rottenBox.appendChild(rottenOnBoard);
 
   let toiletPos = rottenPos - 6;
+  game.toilet.push(toiletPos);
   let toiletBox = document.getElementById(toiletPos);
   let toiletOnBoard = document.createElement("img");
   toiletOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
@@ -250,6 +299,8 @@ const renderChick = () => {
   let min = 10;
   let max = game.boxNumber - 10;
   let chickPos = Math.floor(Math.random() * (max - min + 1)) + min;
+  game.chicken.push(chickPos);
+
   let chickBox = document.getElementById(chickPos);
   let chickOnBoard = document.createElement("img");
   chickOnBoard.setAttribute("src", "pictures/chicken.png");
@@ -259,6 +310,7 @@ const renderChick = () => {
   chickBox.appendChild(chickOnBoard);
 
   let ladderPos = chickPos + 6;
+  game.ladder.push(ladderPos);
   let ladderBox = document.getElementById(ladderPos);
   let ladderOnBoard = document.createElement("img");
   ladderOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
@@ -269,8 +321,12 @@ const renderChick = () => {
 };
 renderChick();
 
-const createBurger = (currentPos) => {
-  let currBox = document.getElementById(currentPos);
+const createBurger = (playerPos) => {
+  let currBox = document.getElementById(playerPos);
+  console.log("curr", playerPos);
+
+  console.log("curr", currBox);
+
   let currAvaOnBoard = document.createElement("img");
   currAvaOnBoard.setAttribute("src", "pictures/burger.png");
   currAvaOnBoard.setAttribute("alt", "Burgerman");
@@ -278,8 +334,9 @@ const createBurger = (currentPos) => {
   currAvaOnBoard.classList.add("avatar");
   currBox.appendChild(currAvaOnBoard);
 };
-const createFries = (currentPos) => {
-  let currBox = document.getElementById(currentPos);
+const createFries = (playerPos) => {
+  let currBox = document.getElementById(playerPos);
+
   let currAvaOnBoard = document.createElement("img");
   currAvaOnBoard.setAttribute("src", "pictures/fries_sunglass.png");
   currAvaOnBoard.setAttribute("alt", "Friesman");
@@ -288,34 +345,35 @@ const createFries = (currentPos) => {
   currBox.appendChild(currAvaOnBoard);
 };
 
-const renderBurger = (currentPos, prevAva) => {
+const renderBurger = (playerPos, playerAva) => {
   burgerAva.style.display = "none";
-  let currBox = document.getElementById(currentPos);
-  let imgInBox = document.getElementById(prevAva);
-  if (currentPos <= 30) {
+  let currBox = document.getElementById(playerPos);
+  let imgInBox = document.getElementById(playerAva);
+
+  if (playerPos <= 30) {
     if (game.diceRoll < 2) {
-      createBurger(currentPos);
+      createBurger(playerPos);
     } else {
       currBox.appendChild(imgInBox);
     }
-  } else if (currentPos > 30) {
+  } else if (playerPos > 30) {
     let currBox = document.getElementById("30");
     currBox.appendChild(imgInBox);
     renderWin();
   }
 };
 
-const renderFries = (currentPos, prevAva) => {
+const renderFries = (playerPos, playerAva) => {
   friesAva.style.display = "none";
-  let currBox = document.getElementById(currentPos);
-  let imgInBox = document.getElementById(prevAva);
-  if (currentPos <= 30) {
+  let currBox = document.getElementById(playerPos);
+  let imgInBox = document.getElementById(playerAva);
+  if (playerPos <= 30) {
     if (game.diceRoll < 2) {
-      createFries(currentPos);
+      createFries(playerPos);
     } else {
       currBox.appendChild(imgInBox);
     }
-  } else if (currentPos > 30) {
+  } else if (playerPos > 30) {
     let currBox = document.getElementById("30");
     currBox.appendChild(imgInBox);
     renderWin();
