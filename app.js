@@ -3,6 +3,7 @@
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
   players: 2,
+  diceRoll: 0,
   avatar: ["Burgerman", "Friesman"],
   playerTurn: "",
   difficultyLevel: "", // extract level here
@@ -196,44 +197,6 @@ const playerAvatar = () => {
 };
 playerAvatar();
 
-const posTurnUpdate = (result) => {
-  if (game.playerTurn === player1.player) {
-    player1.currPos += result;
-    game.playerTurn = player2.player;
-    game.message = "It's " + game.playerTurn + " turn!";
-
-    let currentPos = player1.currPos;
-    let prevAva = player1.avatar;
-
-    if (player1.avatar === "Burgerman") {
-      renderBurger(currentPos);
-    } else if (player1.avatar === "Friesman") {
-      renderFries(currentPos);
-    }
-    // removePrevRender(currentPos, prevAva);
-
-    renderMessage();
-  } else if (game.playerTurn === player2.player) {
-    player2.currPos = player2.currPos + result;
-    game.playerTurn = player1.player;
-    game.message = "It's " + game.playerTurn + " turn!";
-
-    let currentPos = player2.currPos;
-    let prevAva = player2.avatar;
-
-    if (player2.avatar === "Burgerman") {
-      renderBurger(currentPos);
-    } else if (player1.avatar === "Friesman") {
-      renderFries(currentPos);
-    }
-    // removePrevRender(currentPos, prevAva);
-
-    renderMessage();
-  }
-};
-
-//   //   }
-
 const dice = () => {
   diceroll.addEventListener("click", () => {
     // if (currentPos !== 0) {
@@ -248,10 +211,45 @@ const dice = () => {
     diceResult.setAttribute("alt", picDiceAlt);
 
     posTurnUpdate(result);
+
+    game.diceRoll += 1;
   });
 };
 
 dice();
+
+const posTurnUpdate = (result) => {
+  if (game.playerTurn === player1.player) {
+    player1.currPos += result;
+    game.playerTurn = player2.player;
+    game.message = "It's " + game.playerTurn + " turn!";
+
+    let currentPos = player1.currPos;
+    let prevAva = player1.avatar;
+
+    if (player1.avatar === "Burgerman") {
+      renderBurger(currentPos, prevAva);
+    } else if (player1.avatar === "Friesman") {
+      renderFries(currentPos, prevAva);
+    }
+
+    renderMessage();
+  } else if (game.playerTurn === player2.player) {
+    player2.currPos = player2.currPos + result;
+    game.playerTurn = player1.player;
+    game.message = "It's " + game.playerTurn + " turn!";
+
+    let currentPos = player2.currPos;
+    let prevAva = player2.avatar;
+
+    if (player2.avatar === "Burgerman") {
+      renderBurger(currentPos, prevAva);
+    } else if (player1.avatar === "Friesman") {
+      renderFries(currentPos, prevAva);
+    }
+    renderMessage();
+  }
+};
 /*---------------------------- Render Functions --------------------------------*/
 const renderRotten = () => {
   winPopup.setAttribute("src", "");
@@ -267,72 +265,109 @@ const renderWin = () => {
   winPopup.setAttribute("alt", "You win!");
 };
 
-// const removePrevRender = (currentPos,prevAva) => {
-//   if (currentPos === 0) {
-//     return;
-//   } else {
-//     for (let i = 0; i < currentPos; i++) {
-//       let checkPrevBox = document.getElementById(i);
-//       checkPrevBox.getAttribute(prevAva);
-//       checkPrevBox.remove("img");
-//     }
-//   }
+const removePrevRender = (currentPos, prevAva) => {
+  let imgInBox = document.getElementById(prevAva);
+  let checkCurrBox = document.getElementById(currentPos);
+
+  checkCurrBox.appendChild(imgInBox);
+
+  console.log("img", imgInBox);
+  console.log("this box", checkCurrBox);
+
+  //   for (let i = 1; i <= currentPos; i++) {
+  //     //   let idNum = i;
+  //     let checkCurrBox = document.getElementById(currentPos);
+
+  //     let checkPrevBox = document.getElementById(i);
+  //     let altText = checkPrevBox.getAttribute("alt");
+  //     let imgInBox = document.getElementById(prevAva);
+
+  //     if (game.diceRoll > 2 && (altText = prevAva)) {
+  //       //   if (checkPrevBox.contains(img)) {
+  //       // imgInBox.shift();
+  //       // imgInBox.remove();
+  //       // imgInBox.removeAttribute("alt");
+
+  //
+  //     }
+};
 // };
 
-const removePrevRender = (currentPos, prevAva) => {
-  if (currentPos === 0) {
-    return;
-  } else {
-    for (let i = 0; i < currentPos; i++) {
-      let idNum = i + 1;
-
-      let checkPrevBox = document.getElementById(idNum);
-      let altText = checkPrevBox.getAttribute("alt");
-
-      if ((altText = prevAva)) {
-        checkPrevBox.removeAttribute("src");
-        checkPrevBox.removeAttribute("alt");
-        checkPrevBox.removeAttribute("class");
-      } else {
-        return;
-      }
-    }
-  }
-};
-
-const renderBurger = (currentPos) => {
-  burgerAva.style.display = "none";
+const createBurger = (currentPos) => {
+  let currBox = document.getElementById(currentPos);
   let currAvaOnBoard = document.createElement("img");
   currAvaOnBoard.setAttribute("src", "pictures/burger.png");
   currAvaOnBoard.setAttribute("alt", "Burgerman");
+  currAvaOnBoard.setAttribute("id", "Burgerman");
   currAvaOnBoard.classList.add("avatar");
-  let currBox = document.getElementById(currentPos);
-  if (currentPos <= 30) {
-    let currBox = document.getElementById(currentPos);
-    currBox.appendChild(currAvaOnBoard);
-  } else {
-    let currBox = document.getElementById("30");
-    currBox.appendChild(currAvaOnBoard);
-    renderWin();
-  }
-  //   removePrevRender(currentPos);
+  currBox.appendChild(currAvaOnBoard);
 };
-
-const renderFries = (currentPos) => {
-  friesAva.style.display = "none";
+const createFries = (currentPos) => {
+  let currBox = document.getElementById(currentPos);
   let currAvaOnBoard = document.createElement("img");
   currAvaOnBoard.setAttribute("src", "pictures/fries_sunglass.png");
   currAvaOnBoard.setAttribute("alt", "Friesman");
+  currAvaOnBoard.setAttribute("id", "Friesman");
   currAvaOnBoard.classList.add("avatar");
+  currBox.appendChild(currAvaOnBoard);
+};
+
+const renderBurger = (currentPos, prevAva) => {
+  burgerAva.style.display = "none";
+
+  let currBox = document.getElementById(currentPos);
+  let imgInBox = document.getElementById(prevAva);
+
   if (currentPos <= 30) {
-    let currBox = document.getElementById(currentPos);
-    currBox.appendChild(currAvaOnBoard);
-  } else {
+    if (game.diceRoll < 2) {
+      createBurger(currentPos);
+    } else {
+      currBox.appendChild(imgInBox);
+      console.log("remove", currBox, imgInBox);
+    }
+  } else if (currentPos > 30) {
     let currBox = document.getElementById("30");
-    currBox.appendChild(currAvaOnBoard);
+    currBox.appendChild(imgInBox);
     renderWin();
   }
 };
+
+const renderFries = (currentPos, prevAva) => {
+  friesAva.style.display = "none";
+
+  let currBox = document.getElementById(currentPos);
+  let imgInBox = document.getElementById(prevAva);
+
+  if (currentPos <= 30) {
+    if (game.diceRoll < 2) {
+      createFries(currentPos);
+    } else {
+      currBox.appendChild(imgInBox);
+      console.log("remove", currBox, imgInBox);
+    }
+  } else if (currentPos > 30) {
+    let currBox = document.getElementById("30");
+    currBox.appendChild(imgInBox);
+    renderWin();
+  }
+};
+
+// const renderFries = (currentPos, prevAva) => {
+//   friesAva.style.display = "none";
+//   let currAvaOnBoard = document.createElement("img");
+//   currAvaOnBoard.setAttribute("src", "pictures/fries_sunglass.png");
+//   currAvaOnBoard.setAttribute("alt", "Friesman");
+//   currAvaOnBoard.setAttribute("id", "Friesman");
+//   currAvaOnBoard.classList.add("avatar");
+//   if (currentPos <= 30) {
+//     let currBox = document.getElementById(currentPos);
+//     currBox.appendChild(currAvaOnBoard);
+//   } else {
+//     let currBox = document.getElementById("30");
+//     currBox.appendChild(currAvaOnBoard);
+//     renderWin();
+//   }
+// };
 
 const renderMessage = () => {
   message.textContent = game.message;
