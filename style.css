@@ -38,11 +38,14 @@ h1{
 
     font-style:normal
 }
-nav {
+nav,
+.buttons {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    font-size: 0.8rem;    
     height: 30px;
-    padding: 5px 0;
+    padding: 3px 0;
 }
 main{
     display: flex;
@@ -182,8 +185,8 @@ main{
     flex-direction: column;
     justify-content: flex-start;  
     width:100%;
-    height: 35%;
-    padding: 10px 0;
+    height: 50%;
+    padding: 5px 0;
     field-sizing: content;
 }
 
@@ -192,8 +195,10 @@ main{
     flex-wrap: wrap;
     flex-direction: column;
     width:100%;
-    height: 30%;
-    justify-content: center; 
+    height: 60%;
+    justify-items: center; 
+    align-items: center;
+
     align-content: center;
     padding: 3px 5px;
 
@@ -223,13 +228,14 @@ main{
 #chooseAvatar
 {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     /* text-align: end; */
     width: 100%;   
     height: fit-content;
     width: fit-content;
     padding: 5px 5px;
-    align-self: center;
+    justify-content: center;
     text-align: center;
 }
 
@@ -284,14 +290,14 @@ font-size: 0.7rem;
 {
     display: flex;
     width: 100%;   
-    height: 40%;
+    height: 30%;
     flex-direction: column;
     justify-content: flex-end;
     field-sizing: content;
 }
 
 #diceresult{
-    width: 50%;
+    width: 100px;
     height: auto;
     align-self: center;
     align-content: center;
@@ -306,10 +312,92 @@ font-size: 0.7rem;
 
 }
 
-
-
-.player3,
+/* .player3,
 .player4
 {
     display: none;
+} */
+
+body .cover{
+    display: flexbox;
+    /* flex-wrap: wrap; */
+    width: 100%;
+    height: auto;
+    align-content:center ;
+    align-items: center ;
+    justify-items:  center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px 10px;
+background-color: rgb(244, 219, 188);
+    /* background-image: url("pictures/plate02a.jpg");
+    background-size: 100%;
+    background-position-y: top;
+    background-position-x: left;
+    background-repeat: no-repeat; */
+    font-family: "Alfa Slab One", serif;
+    font-size: 1rem;
+    font-weight:800;
+    font-style: normal;
+}
+#head{
+    font-family: "Alfa Slab One", serif;
+    font-weight: 800;
+    font-size: 3rem;
+    align-content:center ;
+    align-items: center ;
+    justify-items:  center;
+    justify-content: center;
+text-align: center;
+    font-style:normal
+}
+.players{
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    align-content:center ;
+    align-items: center ;
+    justify-items:  center;
+    justify-content: center;
+text-align: center;
+    width: 50%;   
+    height: 30%;
+}
+.player3,
+.player4{
+    display: none;
+}
+#coverStart{
+
+    align-content:center ;
+    align-items: center ;
+    justify-items:  center;
+    justify-content: center;
+    text-align: center;
+    margin: 30px;
+    padding: 5px 5px;
+
+}
+#coverPage{
+    display:flex;
+}
+#boardBody{
+    display:none;
+    /* flex-wrap: wrap; */
+    width: auto;
+    height: auto;
+    align-content:center ;
+    justify-content: center;
+    padding: 5px 10px;
+background-color: rgb(244, 219, 188);
+    /* background-image: url("pictures/plate02a.jpg");
+    background-size: 100%;
+    background-position-y: top;
+    background-position-x: left;
+    background-repeat: no-repeat; */
+    font-family: "Alfa Slab One", serif;
+    font-size: 1rem;
+    font-weight:800;
+    font-style: normal;
+
 }
