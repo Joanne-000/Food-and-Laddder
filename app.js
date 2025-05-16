@@ -14,8 +14,7 @@ const game = {
   toilet: [], // do separate array for the badfood and toilet
   chicken: [],
   ladder: [], // do separate array for the goodfood and ladder
-  message:
-    "Game start! Please type your name and Player 1 to select your avatar~",
+  message: "",
   isSound: true,
   isMusic: true,
   isWin: true,
@@ -159,6 +158,9 @@ const toMain = () => {
   game.playerTurn = players[0].player;
 
   generateboard();
+  game.message = "Game start! " + players[0].player + ", your turn.";
+
+  renderMessage();
 };
 
 const startBtn = document.getElementById("coverStart");
@@ -270,7 +272,13 @@ const renderAvatar = (playerPos, playerAva) => {
   let currBox = document.getElementById(playerPos);
   let imgInBox = document.getElementById(playerAva);
   console.log("curr Ava", playerAva);
-  if (playerPos < game.levelboxes) {
+
+  if (playerPos >= game.levelboxes) {
+    let currBox = document.getElementById(game.levelboxes);
+    currBox.appendChild(imgInBox);
+    renderWin();
+    return;
+  } else if (playerPos < game.levelboxes) {
     if (game.gameTurn < game.players) {
       if (playerAva === game.avatar[0]) {
         burgerAva.style.display = "none";
@@ -285,14 +293,13 @@ const renderAvatar = (playerPos, playerAva) => {
         hotdogAva.style.display = "none";
         createHotdog(playerPos);
       }
+      game.message = "It's " + game.playerTurn + " turn!";
+      renderMessage();
     } else {
       currBox.appendChild(imgInBox);
+      game.message = "It's " + game.playerTurn + " turn!";
+      renderMessage();
     }
-    console.log(players);
-  } else if (playerPos >= game.levelboxes) {
-    let currBox = document.getElementById(game.levelboxes);
-    currBox.appendChild(imgInBox);
-    renderWin();
   }
 };
 // const avatarUpdate = (playerAva, playerPos) => {
@@ -307,62 +314,81 @@ const renderAvatar = (playerPos, playerAva) => {
 //   }
 //   console.log("avaUpdate", playerPos);
 // };
-
 const posTurnUpdate = (result) => {
   console.log("bef", game.playerTurn);
-  if (game.playerTurn === players[0].player) {
-    posUpdate(players[0], result);
-    game.playerTurn = players[1].player;
-    game.message = "It's " + game.playerTurn + " turn!";
+  for (let i = 0; i < game.players; i++) {
+    let nextPlayer = i + 1;
+    if (nextPlayer === game.players) {
+      nextPlayer = i - i;
+    } else {
+      nextPlayer = i + 1;
+    }
+    if (game.playerTurn === players[i].player) {
+      posUpdate(players[i], result);
 
-    let playerPos = players[0].currPos;
-    let playerAva = players[0].avatar;
+      let playerPos = players[i].currPos;
+      let playerAva = players[i].avatar;
+      renderAvatar(playerPos, playerAva);
 
-    renderAvatar(playerPos, playerAva);
-    renderMessage();
-    console.log("aft BG", game.playerTurn);
-    return;
-  }
-  if (game.playerTurn === players[1].player) {
-    posUpdate(players[1], result);
-    game.playerTurn = players[2].player;
-    game.message = "It's " + game.playerTurn + " turn!";
+      game.playerTurn = players[nextPlayer].player;
 
-    let playerPos = players[1].currPos;
-    let playerAva = players[1].avatar;
-
-    renderAvatar(playerPos, playerAva);
-    renderMessage();
-    console.log("aft Fries", game.playerTurn);
-    return;
-  }
-  if (game.playerTurn === players[2].player) {
-    posUpdate(players[2], result);
-    game.playerTurn = players[3].player;
-    game.message = "It's " + game.playerTurn + " turn!";
-
-    let playerPos = players[2].currPos;
-    let playerAva = players[2].avatar;
-
-    renderAvatar(playerPos, playerAva);
-    renderMessage();
-    console.log("aft Pizza", game.playerTurn);
-    return;
-  }
-  if (game.playerTurn === players[3].player) {
-    posUpdate(players[3], result);
-    game.playerTurn = players[0].player;
-    game.message = "It's " + game.playerTurn + " turn!";
-
-    let playerPos = players[3].currPos;
-    let playerAva = players[3].avatar;
-
-    renderAvatar(playerPos, playerAva);
-    renderMessage();
-    console.log("aft HD", game.playerTurn);
-    return;
+      console.log("aft BG", game.playerTurn);
+      return;
+    }
   }
 };
+// const posTurnUpdate = (result) => {
+//   console.log("bef", game.playerTurn);
+//   if (game.playerTurn === players[0].player) {
+//     posUpdate(players[0], result);
+
+//     let playerPos = players[0].currPos;
+//     let playerAva = players[0].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[1].player;
+
+//     console.log("aft BG", game.playerTurn);
+//     return;
+//   }
+//   if (game.playerTurn === players[1].player) {
+//     posUpdate(players[1], result);
+
+//     let playerPos = players[1].currPos;
+//     let playerAva = players[1].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[2].player;
+
+//     console.log("aft Fries", game.playerTurn);
+//     return;
+//   }
+//   if (game.playerTurn === players[2].player) {
+//     posUpdate(players[2], result);
+
+//     let playerPos = players[2].currPos;
+//     let playerAva = players[2].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[3].player;
+
+//     console.log("aft Pizza", game.playerTurn);
+//     return;
+//   }
+//   if (game.playerTurn === players[3].player) {
+//     posUpdate(players[3], result);
+
+//     let playerPos = players[3].currPos;
+//     let playerAva = players[3].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[0].player;
+
+//     console.log("aft HD", game.playerTurn);
+//     return;
+//   }
+// };
+
 /*---------------------------- Render Functions --------------------------------*/
 
 const renderRotten = () => {
@@ -530,6 +556,7 @@ const renderWin = () => {
   winPopup.setAttribute("alt", "You win!");
 
   diceroll.disabled = true;
+  return;
 };
 
 /*-------------------------------- Functions --------------------------------*/
