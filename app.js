@@ -38,6 +38,9 @@ const playersNo = document.getElementById("PNo");
 const hideCover = document.getElementById("coverPage");
 const showBoard = document.getElementById("boardBody");
 const P3 = document.querySelector(".player3");
+const P3pizza = document.querySelector(".pizza");
+const P4hotdog = document.querySelector(".hotdog");
+
 const P4 = document.querySelector(".player4");
 const chsburger = document.getElementById("chsburger");
 const chsfries = document.getElementById("chsfries");
@@ -53,11 +56,13 @@ const playerNumber = () => {
       P3.style.display = "flex";
       chspizza.style.display = "inline-block";
       pizzaAva.style.display = "flex";
+      P3pizza.style.display = "flex";
     }
     if (game.players === 4) {
       P4.style.display = "flex";
       chshotdog.style.display = "inline-block";
       hotdogAva.style.display = "flex";
+      P4hotdog.style.display = "flex";
     }
     // players.length = 0;
   });
@@ -83,67 +88,23 @@ const pushPlayerName = () => {
     }
   }
 };
-// const playerNameInput = () => {
-//   for (let i = 0; i < game.players; i++) {
-//     let playerNo = i + 1;
-//     let playerID = "P" + playerNo;
-
-//     players[i].player = document.getElementById(playerID);
-//   }
-// };
-// console.log("aft", players);
-
-// const playerNameInput = () => {
-//   console.log("bef", game.players);
-
-//   for (let i = 0; i < game.players; i++) {
-//     let playerNo = i + 1;
-//     let playerID = "P" + playerNo;
-//     let playerName = document.getElementById(playerID);
-
-//     playerName.addEventListener("change", (event) => {
-//       players[i].player = event.target.value;
-//       console.log("aft", players);
-//     });
-//   }
-// };
-// playerNameInput();
-
-// console.log(easy);
-// console.log(med);
-
-// console.log(hard);
-
-// const easy = document.getElementById("easy");
-// const med = document.getElementById("med");
-// const hard = document.getElementById("hard");
-
-// easy.addEventListener("click", () => {
-//   game.levelchosen = "easy";
-// });
-// med.addEventListener("click", () => {
-//   game.levelchosen = "med";
-// });
-// hard.addEventListener("click", () => {
-//   game.levelchosen = "hard";
-// });
 
 const playerAvatar = () => {
-  document.querySelector(".burger").textContent = players[0].player;
-  document.querySelector(".fries").textContent = players[1].player;
-  document.querySelector(".pizza").textContent = players[2].player;
-  document.querySelector(".hotdog").textContent = players[3].player;
+  for (let i = 0; i < game.players; i++) {
+    if (players[i].avatar === game.avatar[0]) {
+      document.querySelector(".burger").textContent = players[i].player;
+    }
+    if (players[i].avatar === game.avatar[1]) {
+      document.querySelector(".fries").textContent = players[i].player;
+    }
+    if (players[i].avatar === game.avatar[2]) {
+      document.querySelector(".pizza").textContent = players[i].player;
+    }
+    if (players[i].avatar === game.avatar[3]) {
+      document.querySelector(".hotdog").textContent = players[i].player;
+    }
+  }
 };
-
-// game.message =
-//     "Hey " +
-//     players[i].player +
-//     ", you are " +
-//     players[i].avatar +
-//     " . It's your turn.";
-//   renderMessage();
-
-// playerAvatar();
 
 const cover = () => {
   playerNumber();
@@ -156,10 +117,9 @@ const toMain = () => {
   hideCover.style.display = "none";
   showBoard.style.display = "block";
   game.playerTurn = players[0].player;
-
   generateboard();
+  playerAvatar();
   game.message = "Game start! " + players[0].player + ", your turn.";
-
   renderMessage();
 };
 
@@ -254,6 +214,7 @@ const dice = () => {
     game.gameTurn += 1;
   });
 };
+
 const posUpdate = (player, result) => {
   player.currPos += result;
 
@@ -264,10 +225,6 @@ const posUpdate = (player, result) => {
   }
 };
 
-// const avatarUpdate = (playerPos, playerAva) => {
-//   renderAvatar(playerPos, playerAva);
-//   console.log("avaUpdate", playerPos);
-// };
 const renderAvatar = (playerPos, playerAva) => {
   let currBox = document.getElementById(playerPos);
   let imgInBox = document.getElementById(playerAva);
@@ -302,20 +259,8 @@ const renderAvatar = (playerPos, playerAva) => {
     }
   }
 };
-// const avatarUpdate = (playerAva, playerPos) => {
-//   if (playerAva === "Burgerman") {
-//     renderBurger(playerPos, playerAva);
-//   } else if (playerAva === "Friesman") {
-//     renderFries(playerPos, playerAva);
-//   } else if (playerAva === "Pizzaman") {
-//     renderPizza(playerPos, playerAva);
-//   } else if (playerAva === "Hotdogmanman") {
-//     renderHotdog(playerPos, playerAva);
-//   }
-//   console.log("avaUpdate", playerPos);
-// };
+
 const posTurnUpdate = (result) => {
-  console.log("bef", game.playerTurn);
   for (let i = 0; i < game.players; i++) {
     let nextPlayer = i + 1;
     if (nextPlayer === game.players) {
@@ -325,72 +270,16 @@ const posTurnUpdate = (result) => {
     }
     if (game.playerTurn === players[i].player) {
       posUpdate(players[i], result);
-
       let playerPos = players[i].currPos;
       let playerAva = players[i].avatar;
       renderAvatar(playerPos, playerAva);
-
       game.playerTurn = players[nextPlayer].player;
-
-      console.log("aft BG", game.playerTurn);
       return;
     }
   }
 };
-// const posTurnUpdate = (result) => {
-//   console.log("bef", game.playerTurn);
-//   if (game.playerTurn === players[0].player) {
-//     posUpdate(players[0], result);
-
-//     let playerPos = players[0].currPos;
-//     let playerAva = players[0].avatar;
-//     renderAvatar(playerPos, playerAva);
-
-//     game.playerTurn = players[1].player;
-
-//     console.log("aft BG", game.playerTurn);
-//     return;
-//   }
-//   if (game.playerTurn === players[1].player) {
-//     posUpdate(players[1], result);
-
-//     let playerPos = players[1].currPos;
-//     let playerAva = players[1].avatar;
-//     renderAvatar(playerPos, playerAva);
-
-//     game.playerTurn = players[2].player;
-
-//     console.log("aft Fries", game.playerTurn);
-//     return;
-//   }
-//   if (game.playerTurn === players[2].player) {
-//     posUpdate(players[2], result);
-
-//     let playerPos = players[2].currPos;
-//     let playerAva = players[2].avatar;
-//     renderAvatar(playerPos, playerAva);
-
-//     game.playerTurn = players[3].player;
-
-//     console.log("aft Pizza", game.playerTurn);
-//     return;
-//   }
-//   if (game.playerTurn === players[3].player) {
-//     posUpdate(players[3], result);
-
-//     let playerPos = players[3].currPos;
-//     let playerAva = players[3].avatar;
-//     renderAvatar(playerPos, playerAva);
-
-//     game.playerTurn = players[0].player;
-
-//     console.log("aft HD", game.playerTurn);
-//     return;
-//   }
-// };
 
 /*---------------------------- Render Functions --------------------------------*/
-
 const renderRotten = () => {
   let min = 10;
   let max = game.levelboxes - 10;
@@ -476,6 +365,185 @@ const createHotdog = (playerPos) => {
   currBox.appendChild(currAvaOnBoard);
 };
 
+const renderMessage = () => {
+  message.textContent = game.message;
+};
+
+const renderWin = () => {
+  const winPopup = document.getElementById("winpic");
+  game.message = game.playerTurn + " WIN!!!";
+  message.textContent = game.message;
+  winPopup.setAttribute("src", "pictures/win2.png");
+  winPopup.setAttribute("alt", "You win!");
+
+  diceroll.disabled = true;
+  return;
+};
+
+/*-------------------------------- Functions --------------------------------*/
+const generateboard = () => {
+  rows6();
+  gameBoardEasy();
+
+  setTimeout(renderRotten(), 200);
+  setTimeout(renderChick(), 200);
+  dice();
+};
+
+// const playerNameInput = () => {
+//   for (let i = 0; i < game.players; i++) {
+//     let playerNo = i + 1;
+//     let playerID = "P" + playerNo;
+
+//     players[i].player = document.getElementById(playerID);
+//   }
+// };
+// console.log("aft", players);
+
+// const playerNameInput = () => {
+//   console.log("bef", game.players);
+
+//   for (let i = 0; i < game.players; i++) {
+//     let playerNo = i + 1;
+//     let playerID = "P" + playerNo;
+//     let playerName = document.getElementById(playerID);
+
+//     playerName.addEventListener("change", (event) => {
+//       players[i].player = event.target.value;
+//       console.log("aft", players);
+//     });
+//   }
+// };
+// playerNameInput();
+
+// console.log(easy);
+// console.log(med);
+
+// console.log(hard);
+
+// const easy = document.getElementById("easy");
+// const med = document.getElementById("med");
+// const hard = document.getElementById("hard");
+
+// easy.addEventListener("click", () => {
+//   game.levelchosen = "easy";
+// });
+// med.addEventListener("click", () => {
+//   game.levelchosen = "med";
+// });
+// hard.addEventListener("click", () => {
+//   game.levelchosen = "hard";
+// });
+
+// if (result === 1) {
+//   dice1();
+// }
+// if (result === 2) {
+//   dice2();
+// }
+// if (result === 3) {
+//   dice3();
+// }
+// if (result === 4) {
+//   dice4();
+// }
+// if (result === 5) {
+//   dice5();
+// }
+// if (result === 6) {
+//   dice6();
+// }
+
+// const dice1 = () => {
+//   diceresult.setAttribute("src", "pictures/dice01.jpg");
+//   diceresult.setAttribute("alt", "1 dot");
+// };
+// const dice2 = () => {
+//   diceresult.setAttribute("src", "pictures/dice02.jpg");
+//   diceresult.setAttribute("alt", "2 dot");
+// };
+// const dice3 = () => {
+//   diceresult.setAttribute("src", "pictures/dice03.jpg");
+//   diceresult.setAttribute("alt", "3 dot");
+// };
+// const dice4 = () => {
+//   diceresult.setAttribute("src", "pictures/dice04.jpg");
+//   diceresult.setAttribute("alt", "4 dot");
+// };
+// const dice5 = () => {
+//   diceresult.setAttribute("src", "pictures/dice05.jpg");
+//   diceresult.setAttribute("alt", "5 dot");
+// };
+// const dice6 = () => {
+//   diceresult.setAttribute("src", "pictures/dice06.jpg");
+//   diceresult.setAttribute("alt", "6 dot");
+// };
+
+// const avatarUpdate = (playerAva, playerPos) => {
+//   if (playerAva === "Burgerman") {
+//     renderBurger(playerPos, playerAva);
+//   } else if (playerAva === "Friesman") {
+//     renderFries(playerPos, playerAva);
+//   } else if (playerAva === "Pizzaman") {
+//     renderPizza(playerPos, playerAva);
+//   } else if (playerAva === "Hotdogmanman") {
+//     renderHotdog(playerPos, playerAva);
+//   }
+//   console.log("avaUpdate", playerPos);
+// };
+
+// const posTurnUpdate = (result) => {
+//   console.log("bef", game.playerTurn);
+//   if (game.playerTurn === players[0].player) {
+//     posUpdate(players[0], result);
+
+//     let playerPos = players[0].currPos;
+//     let playerAva = players[0].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[1].player;
+
+//     console.log("aft BG", game.playerTurn);
+//     return;
+//   }
+//   if (game.playerTurn === players[1].player) {
+//     posUpdate(players[1], result);
+
+//     let playerPos = players[1].currPos;
+//     let playerAva = players[1].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[2].player;
+
+//     console.log("aft Fries", game.playerTurn);
+//     return;
+//   }
+//   if (game.playerTurn === players[2].player) {
+//     posUpdate(players[2], result);
+
+//     let playerPos = players[2].currPos;
+//     let playerAva = players[2].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[3].player;
+
+//     console.log("aft Pizza", game.playerTurn);
+//     return;
+//   }
+//   if (game.playerTurn === players[3].player) {
+//     posUpdate(players[3], result);
+
+//     let playerPos = players[3].currPos;
+//     let playerAva = players[3].avatar;
+//     renderAvatar(playerPos, playerAva);
+
+//     game.playerTurn = players[0].player;
+
+//     console.log("aft HD", game.playerTurn);
+//     return;
+//   }
+// };
+
 // const renderBurger = (playerPos, playerAva) => {
 //   burgerAva.style.display = "none";
 //   let currBox = document.getElementById(playerPos);
@@ -543,72 +611,4 @@ const createHotdog = (playerPos) => {
 //     currBox.appendChild(imgInBox);
 //     renderWin();
 //   }
-// };
-const renderMessage = () => {
-  message.textContent = game.message;
-};
-
-const renderWin = () => {
-  const winPopup = document.getElementById("winpic");
-  game.message = game.playerTurn + " WIN!!!";
-  message.textContent = game.message;
-  winPopup.setAttribute("src", "pictures/win2.png");
-  winPopup.setAttribute("alt", "You win!");
-
-  diceroll.disabled = true;
-  return;
-};
-
-/*-------------------------------- Functions --------------------------------*/
-const generateboard = () => {
-  rows6();
-  gameBoardEasy();
-
-  setTimeout(renderRotten(), 300);
-  setTimeout(renderChick(), 300);
-  dice();
-};
-
-// if (result === 1) {
-//   dice1();
-// }
-// if (result === 2) {
-//   dice2();
-// }
-// if (result === 3) {
-//   dice3();
-// }
-// if (result === 4) {
-//   dice4();
-// }
-// if (result === 5) {
-//   dice5();
-// }
-// if (result === 6) {
-//   dice6();
-// }
-
-// const dice1 = () => {
-//   diceresult.setAttribute("src", "pictures/dice01.jpg");
-//   diceresult.setAttribute("alt", "1 dot");
-// };
-// const dice2 = () => {
-//   diceresult.setAttribute("src", "pictures/dice02.jpg");
-//   diceresult.setAttribute("alt", "2 dot");
-// };
-// const dice3 = () => {
-//   diceresult.setAttribute("src", "pictures/dice03.jpg");
-//   diceresult.setAttribute("alt", "3 dot");
-// };
-// const dice4 = () => {
-//   diceresult.setAttribute("src", "pictures/dice04.jpg");
-//   diceresult.setAttribute("alt", "4 dot");
-// };
-// const dice5 = () => {
-//   diceresult.setAttribute("src", "pictures/dice05.jpg");
-//   diceresult.setAttribute("alt", "5 dot");
-// };
-// const dice6 = () => {
-//   diceresult.setAttribute("src", "pictures/dice06.jpg");
-//   diceresult.setAttribute("alt", "6 dot");
 // };
