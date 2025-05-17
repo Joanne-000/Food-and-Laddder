@@ -1,5 +1,21 @@
 // import assert from "node:assert";
+/*-------------------------------- Constants --------------------------------*/
+const avatars = {
+  Burgerman: { src: "pictures/burger.png", alt: "Burgerman", id: "burger" },
+  Friesman: {
+    src: "pictures/fries_sunglass.png",
+    alt: "Friesman",
+    id: "fries",
+  },
+  Pizzaman: { src: "pictures/pizzaman.png", alt: "Pizzaman", id: "pizza" },
+  Hotdogman: { src: "pictures/hotdogman.png", alt: "Hotdogman", id: "hotdog" },
+};
 
+const difficultyMode = {
+  Easy: { boardBox: 30, row: 6, numRotten: 1, numChicken: 1 },
+  Medium: { boardBox: 60, row: 6, numRotten: 3, numChicken: 3 },
+  Hard: { boardBox: 100, row: 10, numRotten: 5, numChicken: 5 },
+};
 /*---------------------------- Variables (state) ----------------------------*/
 const game = {
   players: 2, // revert to default
@@ -15,7 +31,6 @@ const game = {
   levelBoxes: "", // revert to default
   rowOnBoard: "", // revert to default
   gameTurn: 0, // revert to default
-  playerTurn: "", // revert to default
   rotten: [], // revert to default
   toilet: [], // revert to default
   chicken: [], // revert to default
@@ -148,7 +163,6 @@ const toMain = () => {
   pushPlayerName();
   Cover.style.display = "none";
   Board.style.display = "block";
-  game.playerTurn = players[0].player;
   //generate new board
   generateboard();
   playerAvatar();
@@ -174,7 +188,6 @@ const homeRestartData = () => {
   game.levelChosen = "";
   game.levelBoxes = "";
   game.gameTurn = 0;
-  game.playerTurn = "";
   game.rotten = [];
   game.toilet = [];
   game.chicken = [];
@@ -193,7 +206,6 @@ const homeRestartData = () => {
 const startRestartData = () => {
   game.message = "";
   game.gameTurn = 0;
-  game.playerTurn = "";
   game.rotten = [];
   game.toilet = [];
   game.chicken = [];
@@ -216,7 +228,6 @@ const backtoHome = () => {
 const StartBtn = () => {
   //reset prev data and board
   startRestartData();
-  game.playerTurn = players[0].player;
   //generate new board
   generateboard();
   playerAvatar();
@@ -236,7 +247,6 @@ const rows = () => {
     row.classList.add(rowNum);
     gameboard.prepend(row);
   }
-  console.log("gameboard", gameboard);
 };
 
 const gameBoard = () => {
@@ -252,13 +262,8 @@ const gameBoard = () => {
         let boxName = i + 1;
 
         const newSqr = document.createElement("div");
-        console.log("rowNo", rowNo);
-        console.log("boxName", boxName);
-
         const row = document.querySelector(rowNum);
-
         row.appendChild(newSqr);
-        console.log("row", row);
         newSqr.classList.add("square");
         newSqr.setAttribute("id", boxName);
         newSqr.textContent = boxName;
@@ -282,104 +287,196 @@ const dice = () => {
   let picDiceAlt = result + " dot";
   diceResult.setAttribute("src", picDice);
   diceResult.setAttribute("alt", picDiceAlt);
+  console.log("result", result);
 
-  posTurnUpdate(result);
+  updatePlayer(result);
+  let curr = game.gameTurn % game.players;
   game.gameTurn += 1;
+  playerTurn(curr);
 };
 
-const posUpdate = (player, result) => {
-  player.currPos += result;
+const updatePlayer = (result) => {
+  console.log("game.gameTurn", game.gameTurn);
 
-  if (player.currPos === game.rotten[0]) {
-    player.currPos = game.toilet[0];
-  } else if (player.currPos === game.chicken[0]) {
-    player.currPos = game.ladder[0];
+  let curr = game.gameTurn % game.players;
+  console.log("curr", curr);
+
+  players[curr].currPos += result;
+  console.log("players", players);
+
+  for (let i = 0; i < game.chicken.length; i++) {
+    if (players[curr].currPos === game.rotten[i]) {
+      players[curr].currPos = game.toilet[i];
+    } else if (players[curr].currPos === game.chicken[i]) {
+      players[curr].currPos = game.ladder[i];
+    }
   }
+  console.log("players", players);
+  renderAvatar(players[curr].currPos, players[curr]);
 };
 
-const renderAvatar = (playerPos, playerAva) => {
-  let currBox = document.getElementById(playerPos);
-  let imgInBox = document.getElementById(playerAva);
+const renderAvatar = (playerPos, player) => {
+  let currBox = document.getElementById(player.currPos);
+  let imgInBox = document.getElementById(player.avatar);
 
   if (playerPos >= game.levelBoxes) {
     let currBox = document.getElementById(game.levelBoxes);
     currBox.appendChild(imgInBox);
-    renderWin();
-    return;
-  } else if (playerPos < game.levelBoxes) {
+  } else if (player.currPos < game.levelBoxes) {
     if (game.gameTurn < game.players) {
-      if (playerAva === game.avatar[0]) {
+      if (player.avatar === game.avatar[0]) {
         burgerAva.style.display = "none";
         createBurger(playerPos);
-      } else if (playerAva === game.avatar[1]) {
+      } else if (player.avatar === game.avatar[1]) {
         friesAva.style.display = "none";
         createFries(playerPos);
-      } else if (playerAva === game.avatar[2]) {
+      } else if (player.avatar === game.avatar[2]) {
         pizzaAva.style.display = "none";
         createPizza(playerPos);
-      } else if (playerAva === game.avatar[3]) {
+      } else if (player.avatar === game.avatar[3]) {
         hotdogAva.style.display = "none";
         createHotdog(playerPos);
       }
-      game.message = "It's " + game.playerTurn + " turn!";
-      renderMessage();
     } else {
       currBox.appendChild(imgInBox);
-      game.message = "It's " + game.playerTurn + " turn!";
-      renderMessage();
     }
   }
 };
 
-const posTurnUpdate = (result) => {
-  for (let i = 0; i < game.players; i++) {
-    let nextPlayer = i + 1;
-    if (nextPlayer === game.players) {
-      nextPlayer = i - i;
-    } else {
-      nextPlayer = i + 1;
-    }
-    if (game.playerTurn === players[i].player) {
-      posUpdate(players[i], result);
-      let playerPos = players[i].currPos;
-      let playerAva = players[i].avatar;
-      renderAvatar(playerPos, playerAva);
-      game.playerTurn = players[nextPlayer].player;
-      return;
-    }
+const playerTurn = (curr) => {
+  if (players[curr].currPos >= game.levelBoxes) {
+    renderWin();
+  } else {
+    let nextPlayer = game.gameTurn % game.players;
+    game.message = "It's " + players[nextPlayer].name + " turn!";
+    renderMessage();
   }
 };
+// const posUpdate = (player, result) => {
+//   player.currPos += result;
+//   for (let i = 0; i < game.chicken.length; i++) {
+//     if (player.currPos === game.rotten[i]) {
+//       player.currPos = game.toilet[i];
+//     } else if (player.currPos === game.chicken[i]) {
+//       player.currPos = game.ladder[i];
+//     }
+//   }
+// };
+
+// const renderAvatar = (player) => {
+//   let currBox = document.getElementById(player.currPos);
+//   let imgInBox = document.getElementById(player.avatar);
+
+//   if (player.currPos >= game.levelBoxes) {
+//     let currBox = document.getElementById(game.levelBoxes);
+//     currBox.appendChild(imgInBox);
+//   } else if (player.currPos < game.levelBoxes) {
+//     if (game.gameTurn < game.players) {
+//       if (player.avatar === game.avatar[0]) {
+//         burgerAva.style.display = "none";
+//         createBurger(player.currPos);
+//       } else if (player.avatar === game.avatar[1]) {
+//         friesAva.style.display = "none";
+//         createFries(player.currPos);
+//       } else if (player.avatar === game.avatar[2]) {
+//         pizzaAva.style.display = "none";
+//         createPizza(player.currPos);
+//       } else if (player.avatar === game.avatar[3]) {
+//         hotdogAva.style.display = "none";
+//         createHotdog(player.currPos);
+//       }
+//     } else {
+//       currBox.appendChild(imgInBox);
+//     }
+//   }
+// };
+
+// const posTurnUpdate = (result) => {
+//   for (let i = 0; i < game.players; i++) {
+//     console.log("players", players);
+//     let currPlayer;
+//     if (game.gameTurn < game.players) {
+//       currPlayer = game.gameTurn;
+//     } else {
+//       currPlayer = game.gameTurn % game.players;
+//     }
+
+//     posUpdate(players[currPlayer], result);
+//     renderAvatar(players[currPlayer], players[currPlayer]);
+//   }
+// };
 
 /*---------------------------- Render Functions --------------------------------*/
-const renderRotten = () => {
+const randomRotten = () => {
   let min = 10;
   let max = game.levelBoxes - 10;
   let rottenPos = Math.floor(Math.random() * (max - min + 1)) + min;
   game.rotten.push(rottenPos);
-  let rottenBox = document.getElementById(rottenPos);
-  let rottenOnBoard = document.createElement("img");
-  rottenOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
-  rottenOnBoard.setAttribute("alt", "Rottenfood");
-  rottenOnBoard.setAttribute("id", "Rottenfood");
-  rottenOnBoard.classList.add("foods");
-  rottenBox.appendChild(rottenOnBoard);
-
-  let toiletPos = rottenPos - 6;
-  game.toilet.push(toiletPos);
-  let toiletBox = document.getElementById(toiletPos);
-  let toiletOnBoard = document.createElement("img");
-  toiletOnBoard.setAttribute("src", "pictures/toiletbowl.png");
-  toiletOnBoard.setAttribute("alt", "Toilet");
-  toiletOnBoard.setAttribute("id", "Toilet");
-  toiletOnBoard.classList.add("foods");
-  toiletBox.appendChild(toiletOnBoard);
 };
-
-const renderChick = () => {
+const randomChicken = () => {
   let min = 10;
   let max = game.levelBoxes - 10;
   let chickPos = Math.floor(Math.random() * (max - min + 1)) + min;
   game.chicken.push(chickPos);
+};
+
+const generateRottenNChicken = () => {
+  randomRotten();
+  randomChicken();
+  if (game.levelChosen === game.difficultyLevel[1]) {
+    randomRotten();
+    randomChicken();
+  }
+  if (game.levelChosen === game.difficultyLevel[2]) {
+    randomRotten();
+    randomRotten();
+    randomChicken();
+    randomChicken();
+  }
+
+  for (let i = 0; i < game.rotten.length; i++) {
+    for (let j = 0; j < game.rotten.length; j++) {
+      if (game.rotten[i] === game.rotten[j]) {
+        game.rotten[j] = game.rotten[j] + 1;
+      }
+      if (game.chicken[i] === game.chicken[j]) {
+        game.chicken[j] = game.chicken[j] + 1;
+      }
+      if (game.chicken[i] === game.rotten[j]) {
+        game.chicken[i] = game.chicken[j] + 1;
+      }
+    }
+  }
+
+  for (let i = 0; i < game.chicken.length; i++) {
+    game.toilet[i] = game.rotten[i] - 6;
+    game.ladder[i] = game.chicken[i] + 8;
+  }
+  for (let i = 0; i < game.chicken.length; i++) {
+    renderRotten(game.rotten[i], game.toilet[i]);
+    renderChick(game.chicken[i], game.ladder[i]);
+  }
+};
+
+const renderRotten = (rottenPos, toiletPos) => {
+  let rottenBox = document.getElementById(rottenPos);
+  let rottenOnBoard = document.createElement("img");
+  rottenOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
+  rottenOnBoard.setAttribute("alt", "Rottenfood");
+  // rottenOnBoard.setAttribute("id", "Rottenfood");
+  rottenOnBoard.classList.add("foods");
+  rottenBox.appendChild(rottenOnBoard);
+
+  let toiletBox = document.getElementById(toiletPos);
+  let toiletOnBoard = document.createElement("img");
+  toiletOnBoard.setAttribute("src", "pictures/toiletbowl.png");
+  toiletOnBoard.setAttribute("alt", "Toilet");
+  // toiletOnBoard.setAttribute("id", "Toilet");
+  toiletOnBoard.classList.add("foods");
+  toiletBox.appendChild(toiletOnBoard);
+};
+
+const renderChick = (chickPos, ladderPos) => {
   let chickBox = document.getElementById(chickPos);
   let chickOnBoard = document.createElement("img");
   chickOnBoard.setAttribute("src", "pictures/chicken.png");
@@ -388,8 +485,6 @@ const renderChick = () => {
   chickOnBoard.classList.add("foods");
   chickBox.appendChild(chickOnBoard);
 
-  let ladderPos = chickPos + 6;
-  game.ladder.push(ladderPos);
   let ladderBox = document.getElementById(ladderPos);
   let ladderOnBoard = document.createElement("img");
   ladderOnBoard.setAttribute("src", "pictures/powerup.png");
@@ -400,12 +495,20 @@ const renderChick = () => {
 };
 
 const createBurger = (playerPos) => {
+  console.log("gameboard", gameboard);
+  console.log("playerPos", player);
+  console.log("player.currPos", playerPos);
+
   let currBox = document.getElementById(playerPos);
+
   let currAvaOnBoard = document.createElement("img");
   currAvaOnBoard.setAttribute("src", "pictures/burger.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[0]);
   currAvaOnBoard.setAttribute("id", game.avatar[0]);
   currAvaOnBoard.classList.add("avatar");
+  console.log("currBox", currBox);
+
+  console.log("playerPos", players);
   currBox.appendChild(currAvaOnBoard);
 };
 const createFries = (playerPos) => {
@@ -483,21 +586,122 @@ const generateboard = () => {
   rows();
   gameBoard();
 
-  setTimeout(renderRotten(), 200);
-  setTimeout(renderChick(), 200);
-
-  if (game.levelChosen === game.difficultyLevel[1]) {
-    setTimeout(renderRotten(), 200);
-    setTimeout(renderChick(), 200);
-  }
-  if (game.levelChosen === game.difficultyLevel[2]) {
-    setTimeout(renderRotten(), 200);
-    setTimeout(renderChick(), 200);
-    setTimeout(renderRotten(), 200);
-    setTimeout(renderChick(), 200);
-  }
+  setTimeout(generateRottenNChicken, 100);
 };
+// const checkDuplicate = () => {
+//   for (let i = 0; i < game.rotten.length; i++) {
+//     for (let j = 0; j < game.rotten.length; j++) {
+//       if (game.rotten[i] === game.rotten[j]) {
+//         return false;
+//       }
+//       return true;
+//     }
+//   }
+// };
+// do {
+//   let min = 10;
+//   let max = game.levelBoxes - 10;
+//   let chickPos = Math.floor(Math.random() * (max - min + 1)) + min;
+// } while (!checkDuplicate(chickPos));
+// game.rotten.push(rottenPos);
 
+// const renderRotten = () => {
+//   let min = 10;
+//   let max = game.levelBoxes - 10;
+//   let rottenPos = Math.floor(Math.random() * (max - min + 1)) + min;
+//   game.rotten.push(rottenPos);
+
+//   for (let i = 0; i < game.rotten.length; i++) {
+//     for (let j = i + 1; j < game.rotten.length; j++) {
+//       if (game.rotten[i] === game.rotten[j]) {
+//         game.rotten[j] = j + 1;
+//       }
+//     }
+//   }
+
+//   let rottenBox = document.getElementById(rottenPos);
+//   let rottenOnBoard = document.createElement("img");
+//   rottenOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
+//   rottenOnBoard.setAttribute("alt", "Rottenfood");
+//   rottenOnBoard.setAttribute("id", "Rottenfood");
+//   rottenOnBoard.classList.add("foods");
+//   rottenBox.appendChild(rottenOnBoard);
+
+//   let toiletPos = rottenPos - 6;
+//   game.toilet.push(toiletPos);
+//   let toiletBox = document.getElementById(toiletPos);
+//   let toiletOnBoard = document.createElement("img");
+//   toiletOnBoard.setAttribute("src", "pictures/toiletbowl.png");
+//   toiletOnBoard.setAttribute("alt", "Toilet");
+//   toiletOnBoard.setAttribute("id", "Toilet");
+//   toiletOnBoard.classList.add("foods");
+//   toiletBox.appendChild(toiletOnBoard);
+// };
+
+// const renderChick = () => {
+//   let min = 10;
+//   let max = game.levelBoxes - 10;
+//   let chickPos = Math.floor(Math.random() * (max - min + 1)) + min;
+//   game.chicken.push(chickPos);
+
+//   for (let i = 0; i < game.chicken.length; i++) {
+//     for (let j = i + 1; j < game.chicken.length; j++) {
+//       if (game.chicken[i] === game.chicken[j]) {
+//         game.chicken[j] = j + 1;
+//       }
+//     }
+//   }
+
+//   for (let i = 0; i < game.chicken.length; i++) {
+//     for (let j = 0; j < game.rotten.length; j++) {
+//       if (game.chicken[i] === game.rotten[j]) {
+//         game.chicken[i] + 1;
+//       }
+//     }
+//   }
+
+//   let chickBox = document.getElementById(chickPos);
+//   let chickOnBoard = document.createElement("img");
+//   chickOnBoard.setAttribute("src", "pictures/chicken.png");
+//   chickOnBoard.setAttribute("alt", "Chicken");
+//   chickOnBoard.setAttribute("id", "Chicken");
+//   chickOnBoard.classList.add("foods");
+//   chickBox.appendChild(chickOnBoard);
+
+//   let ladderPos = chickPos + 8;
+//   game.ladder.push(ladderPos);
+//   let ladderBox = document.getElementById(ladderPos);
+//   let ladderOnBoard = document.createElement("img");
+//   ladderOnBoard.setAttribute("src", "pictures/powerup.png");
+//   ladderOnBoard.setAttribute("alt", "Ladder");
+//   ladderOnBoard.setAttribute("id", "Ladder");
+//   ladderOnBoard.classList.add("foods");
+//   ladderBox.appendChild(ladderOnBoard);
+// };
+
+// for (let i = 0; i < game.rotten.length; i++) {
+//   for (let j = 0; j < game.rotten.length; j++) {
+//     if (game.rotten[i] === game.rotten[j]) {
+//       game.rotten[j] = j + 1;
+//     }
+//   }
+// }
+
+// for (let i = 0; i < game.chicken.length; i++) {
+//   for (let j = 0; j < game.chicken.length; j++) {
+//     if (game.chicken[i] === game.chicken[j]) {
+//       game.chicken[j] = j + 1;
+//     }
+//   }
+// }
+
+// for (let i = 0; i < game.chicken.length; i++) {
+//   for (let j = 0; j < game.rotten.length; j++) {
+//     if (game.chicken[i] === game.rotten[j]) {
+//       game.chicken[i] + 1;
+//     }
+//   }
+// }
 // const playerNameInput = () => {
 //   for (let i = 0; i < game.players; i++) {
 //     let playerNo = i + 1;
