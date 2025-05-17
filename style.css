@@ -76,7 +76,7 @@ main{
 }
 #winpic
 {
-    display: flex;
+    display: none;
     width: 120%; 
     height:max-content;
     align-items: flex-end;
