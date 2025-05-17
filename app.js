@@ -5,13 +5,15 @@ const game = {
   players: 2, // revert to default
   avatar: ["Burgerman", "Friesman", "Pizzaman", "Hotdogman"],
   difficultyLevel: ["Easy", "Medium", "Hard"],
-  boxNumber: [30, 50, 100],
+  boxNumber: [30, 60, 100],
+  boardRow: [6, 6, 10],
   isSound: true,
   isMusic: true,
   isWin: true,
   message: "", // revert to default
-  levelchosen: "", // revert to default
-  levelboxes: "", // revert to default
+  levelChosen: "", // revert to default
+  levelBoxes: "", // revert to default
+  rowOnBoard: "", // revert to default
   gameTurn: 0, // revert to default
   playerTurn: "", // revert to default
   rotten: [], // revert to default
@@ -23,40 +25,37 @@ const game = {
 const players = [];
 
 /*------------------------ Cached Element References ------------------------*/
-const boardEasy = document.getElementById("boardEasy");
-console.log("parent", boardEasy.children);
-
-const boardchild = boardEasy.children;
-console.log("children", boardchild);
-
 const burgerAva = document.getElementById("burger");
 const friesAva = document.getElementById("fries");
 const pizzaAva = document.getElementById("pizza");
 const hotdogAva = document.getElementById("hotdog");
-
-const diceroll = document.getElementById("dice");
-const winPopup = document.getElementById("winpic");
-
-const message = document.getElementById("messagesplace");
-const diceResult = document.getElementById("diceresult");
-const playersName = document.getElementById("input");
-const nameSubmit = document.getElementById("playersubmit");
-const playersNo = document.getElementById("PNo");
-const Cover = document.getElementById("coverPage");
-const Board = document.getElementById("boardBody");
-const P3 = document.querySelector(".player3");
-const P3pizza = document.querySelector(".pizza");
-const P4hotdog = document.querySelector(".hotdog");
-
-const P4 = document.querySelector(".player4");
 const chsburger = document.getElementById("chsburger");
 const chsfries = document.getElementById("chsfries");
 const chspizza = document.getElementById("chspizza");
 const chshotdog = document.getElementById("chshotdog");
+const P3 = document.querySelector(".player3");
+const P4 = document.querySelector(".player4");
+const P3pizza = document.querySelector(".pizza");
+const P4hotdog = document.querySelector(".hotdog");
 
-const boardStartBtn = document.getElementById("start");
+const Cover = document.getElementById("coverPage");
 const coverStartBtn = document.getElementById("coverStart");
+const playersName = document.getElementById("input");
+// const nameSubmit = document.getElementById("playersubmit");
+const playersNo = document.getElementById("PNo");
+const easy = document.getElementById("easy");
+const med = document.getElementById("med");
+const hard = document.getElementById("hard");
+
+const gameboard = document.getElementById("board");
+const boardchild = gameboard.children;
+const Board = document.getElementById("boardBody");
+const boardStartBtn = document.getElementById("start");
 const boardHomeBtn = document.getElementById("home");
+const message = document.getElementById("messagesplace");
+const diceResult = document.getElementById("diceresult");
+const diceroll = document.getElementById("dice");
+const winPopup = document.getElementById("winpic");
 
 /*----------------------------- Cover -----------------------------*/
 const player3display = () => {
@@ -158,9 +157,8 @@ const toMain = () => {
 };
 
 const removeBoard = () => {
-  console.log("boardchild", boardchild);
-  while (boardEasy.firstChild) {
-    boardEasy.firstChild.remove();
+  while (gameboard.firstChild) {
+    gameboard.firstChild.remove();
   }
 };
 
@@ -172,8 +170,8 @@ const clearPlayerPos = () => {
 
 const restartData = () => {
   game.message = "";
-  game.levelchosen = "";
-  game.levelboxes = 30;
+  game.levelChosen = "";
+  game.levelBoxes = 30;
   game.gameTurn = 0;
   game.playerTurn = "";
   game.rotten = [];
@@ -216,81 +214,56 @@ const StartBtn = () => {
 };
 
 /*----------------------------- Board -----------------------------*/
-// const gameBoard = () => {
-//   for (let i = 0; i < game.difficultyLevel.length; i++) {
-//     if ((game.levelchosen = game.difficultyLevel[i]))
-//       game.levelboxes = game.boxNumber[i];
-//   }
-// };
 
-game.levelboxes = 30;
+const rows = () => {
+  let boardNo = game.levelBoxes;
+  let row = game.rowOnBoard;
 
-const rows6 = () => {
-  for (let i = 0; i < 6; i++) {
-    let rowNum = "row" + i;
+  for (let i = 0; i < row; i++) {
+    let rowNum = "row" + (i + 1);
     let row = document.createElement("div");
-    row.classList.add("row" + (i + 1));
-    boardEasy.prepend(row);
+    row.classList.add(rowNum);
+    gameboard.prepend(row);
   }
+  console.log("gameboard", gameboard);
 };
 
-const gameBoardEasy = () => {
-  let boardNo = 30;
-  let row = 6;
+const gameBoard = () => {
+  let boardNo = game.levelBoxes;
+  let row = game.rowOnBoard;
+  let column = boardNo / row;
 
   for (let i = 0; i < boardNo; i++) {
-    if (i < boardNo / 6) {
-      const newSqr = document.createElement("div");
-      const row1 = document.querySelector(".row1");
-      row1.appendChild(newSqr);
-      const boxName = i + 1;
-      newSqr.classList.add("square");
-      newSqr.setAttribute("id", boxName);
-      newSqr.textContent = boxName;
-    } else if (i < (boardNo / 6) * 2) {
-      const newSqr = document.createElement("div");
-      const row2 = document.querySelector(".row2");
-      row2.appendChild(newSqr);
-      const boxName = i + 1;
-      newSqr.classList.add("square");
-      newSqr.setAttribute("id", boxName);
-      newSqr.textContent = boxName;
-    } else if (i < (boardNo / 6) * 3) {
-      const newSqr = document.createElement("div");
-      const row3 = document.querySelector(".row3");
-      row3.appendChild(newSqr);
-      const boxName = i + 1;
-      newSqr.classList.add("square");
-      newSqr.setAttribute("id", boxName);
-      newSqr.textContent = boxName;
-    } else if (i < (boardNo / 6) * 4) {
-      const newSqr = document.createElement("div");
-      const row4 = document.querySelector(".row4");
-      row4.appendChild(newSqr);
-      const boxName = i + 1;
-      newSqr.classList.add("square");
-      newSqr.setAttribute("id", boxName);
-      newSqr.textContent = boxName;
-    } else if (i < (boardNo / 6) * 5) {
-      const newSqr = document.createElement("div");
-      const row5 = document.querySelector(".row5");
-      row5.appendChild(newSqr);
-      const boxName = i + 1;
-      newSqr.classList.add("square");
-      newSqr.setAttribute("id", boxName);
-      newSqr.textContent = boxName;
-    } else if (i < (boardNo / 6) * 6) {
-      const newSqr = document.createElement("div");
-      const row6 = document.querySelector(".row6");
-      row6.appendChild(newSqr);
-      const boxName = i + 1;
-      newSqr.classList.add("square");
-      newSqr.setAttribute("id", boxName);
-      newSqr.textContent = boxName;
+    for (let j = 0; j < row; j++) {
+      if (Math.floor(i / column) === j) {
+        let rowNo = j + 1;
+        let rowNum = ".row" + rowNo;
+        let boxName = i + 1;
+
+        const newSqr = document.createElement("div");
+        console.log("rowNo", rowNo);
+        console.log("boxName", boxName);
+
+        const row = document.querySelector(rowNum);
+
+        row.appendChild(newSqr);
+        console.log("row", row);
+        newSqr.classList.add("square");
+        newSqr.setAttribute("id", boxName);
+        newSqr.textContent = boxName;
+      }
     }
   }
 };
 
+const gameboardStructure = () => {
+  for (let i = 0; i < game.difficultyLevel.length; i++) {
+    if (game.levelChosen === game.difficultyLevel[i]) {
+      game.levelBoxes = game.boxNumber[i];
+      game.rowOnBoard = game.boardRow[i];
+    }
+  }
+};
 // not affected by adding players
 const dice = () => {
   let result = Math.floor(Math.random() * 6) + 1;
@@ -317,12 +290,12 @@ const renderAvatar = (playerPos, playerAva) => {
   let currBox = document.getElementById(playerPos);
   let imgInBox = document.getElementById(playerAva);
 
-  if (playerPos >= game.levelboxes) {
-    let currBox = document.getElementById(game.levelboxes);
+  if (playerPos >= game.levelBoxes) {
+    let currBox = document.getElementById(game.levelBoxes);
     currBox.appendChild(imgInBox);
     renderWin();
     return;
-  } else if (playerPos < game.levelboxes) {
+  } else if (playerPos < game.levelBoxes) {
     if (game.gameTurn < game.players) {
       if (playerAva === game.avatar[0]) {
         burgerAva.style.display = "none";
@@ -369,7 +342,7 @@ const posTurnUpdate = (result) => {
 /*---------------------------- Render Functions --------------------------------*/
 const renderRotten = () => {
   let min = 10;
-  let max = game.levelboxes - 10;
+  let max = game.levelBoxes - 10;
   let rottenPos = Math.floor(Math.random() * (max - min + 1)) + min;
   game.rotten.push(rottenPos);
   let rottenBox = document.getElementById(rottenPos);
@@ -393,7 +366,7 @@ const renderRotten = () => {
 
 const renderChick = () => {
   let min = 10;
-  let max = game.levelboxes - 10;
+  let max = game.levelBoxes - 10;
   let chickPos = Math.floor(Math.random() * (max - min + 1)) + min;
   game.chicken.push(chickPos);
   let chickBox = document.getElementById(chickPos);
@@ -445,7 +418,7 @@ const createPizza = (playerPos) => {
 const createHotdog = (playerPos) => {
   let currBox = document.getElementById(playerPos);
   let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/hotdogman.jpg");
+  currAvaOnBoard.setAttribute("src", "pictures/hotdogman.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[3]);
   currAvaOnBoard.setAttribute("id", game.avatar[3]);
   currAvaOnBoard.classList.add("avatar");
@@ -471,6 +444,19 @@ boardHomeBtn.addEventListener("click", backtoHome);
 boardStartBtn.addEventListener("click", StartBtn);
 diceroll.addEventListener("click", dice);
 
+easy.addEventListener("click", () => {
+  game.levelChosen = "Easy";
+  gameboardStructure();
+});
+med.addEventListener("click", () => {
+  game.levelChosen = "Medium";
+  gameboardStructure();
+});
+hard.addEventListener("click", () => {
+  game.levelChosen = "Hard";
+  gameboardStructure();
+});
+
 /*-------------------------------- Functions --------------------------------*/
 const cover = () => {
   playerNumber();
@@ -481,8 +467,10 @@ const cover = () => {
 cover();
 
 const generateboard = () => {
-  rows6();
-  gameBoardEasy();
+  // rows6();
+  // gameBoardEasy();
+  rows();
+  gameBoard();
 
   setTimeout(renderRotten(), 200);
   setTimeout(renderChick(), 200);
@@ -514,24 +502,62 @@ const generateboard = () => {
 // };
 // playerNameInput();
 
-// console.log(easy);
-// console.log(med);
+// const gameBoardEasy = () => {
+//   let boardNo = 30;
+//   let row = 6;
 
-// console.log(hard);
-
-// const easy = document.getElementById("easy");
-// const med = document.getElementById("med");
-// const hard = document.getElementById("hard");
-
-// easy.addEventListener("click", () => {
-//   game.levelchosen = "easy";
-// });
-// med.addEventListener("click", () => {
-//   game.levelchosen = "med";
-// });
-// hard.addEventListener("click", () => {
-//   game.levelchosen = "hard";
-// });
+//   for (let i = 0; i < boardNo; i++) {
+//     if (i < boardNo / 6) {
+//       const newSqr = document.createElement("div");
+//       const row1 = document.querySelector(".row1");
+//       row1.appendChild(newSqr);
+//       const boxName = i + 1;
+//       newSqr.classList.add("square");
+//       newSqr.setAttribute("id", boxName);
+//       newSqr.textContent = boxName;
+//     } else if (i < (boardNo / 6) * 2) {
+//       const newSqr = document.createElement("div");
+//       const row2 = document.querySelector(".row2");
+//       row2.appendChild(newSqr);
+//       const boxName = i + 1;
+//       newSqr.classList.add("square");
+//       newSqr.setAttribute("id", boxName);
+//       newSqr.textContent = boxName;
+//     } else if (i < (boardNo / 6) * 3) {
+//       const newSqr = document.createElement("div");
+//       const row3 = document.querySelector(".row3");
+//       row3.appendChild(newSqr);
+//       const boxName = i + 1;
+//       newSqr.classList.add("square");
+//       newSqr.setAttribute("id", boxName);
+//       newSqr.textContent = boxName;
+//     } else if (i < (boardNo / 6) * 4) {
+//       const newSqr = document.createElement("div");
+//       const row4 = document.querySelector(".row4");
+//       row4.appendChild(newSqr);
+//       const boxName = i + 1;
+//       newSqr.classList.add("square");
+//       newSqr.setAttribute("id", boxName);
+//       newSqr.textContent = boxName;
+//     } else if (i < (boardNo / 6) * 5) {
+//       const newSqr = document.createElement("div");
+//       const row5 = document.querySelector(".row5");
+//       row5.appendChild(newSqr);
+//       const boxName = i + 1;
+//       newSqr.classList.add("square");
+//       newSqr.setAttribute("id", boxName);
+//       newSqr.textContent = boxName;
+//     } else if (i < (boardNo / 6) * 6) {
+//       const newSqr = document.createElement("div");
+//       const row6 = document.querySelector(".row6");
+//       row6.appendChild(newSqr);
+//       const boxName = i + 1;
+//       newSqr.classList.add("square");
+//       newSqr.setAttribute("id", boxName);
+//       newSqr.textContent = boxName;
+//     }
+//   }
+// };
 
 // if (result === 1) {
 //   dice1();
