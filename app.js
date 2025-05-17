@@ -123,13 +123,13 @@ const pushPlayerName = () => {
     let playerName = document.getElementById(playerID).value;
     if (playerName === "") {
       players.push({
-        player: "Player " + playerNo,
+        name: "Player " + playerNo,
         avatar: game.avatar[i],
         currPos: 0,
       });
     } else {
       players.push({
-        player: playerName,
+        name: playerName,
         avatar: game.avatar[i],
         currPos: 0,
       });
@@ -166,7 +166,7 @@ const toMain = () => {
   //generate new board
   generateboard();
   playerAvatar();
-  game.message = "Game start! " + players[0].player + ", your turn.";
+  game.message = "Game start! " + players[0].name + ", your turn.";
   renderMessage();
 };
 
@@ -231,7 +231,7 @@ const StartBtn = () => {
   //generate new board
   generateboard();
   playerAvatar();
-  game.message = "Game start! " + players[0].player + ", your turn.";
+  game.message = "Game start! " + players[0].name + ", your turn.";
   renderMessage();
 };
 
