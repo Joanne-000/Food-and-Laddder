@@ -9,27 +9,106 @@
     <script defer src="./app.js"></script>
 
 </head>
-<div class="cover">
-<h1 class="cover"  id="head">Foods and Ladder</h1>    
-<div id="playerinfo" class="cover">
-    <h2>No. of players</h2>
-        <div><input type="number" id="PNo" value="2"  min="2" max="4" placeholder="Players no."></div>
-        <div class="players" >
-            <h2>Enter Player's name</h2>
-            <input type="text" class="players" id="P1" placeholder="Player 1" >
-            <input type="text" class="players" id="P2" placeholder="Player 2" >
-            <input type="text" class="players" id="P3" placeholder="Player 3" >
-            <input type="text" class="players" id="P4" placeholder="Player 4" >
+<body>
+    <img id="background">
+    <header>
+        <h1>Foods &amp Ladder</h1>
+        <section id="setting">
+            <button id="info">?</button>
+            <button id="sound">🔊</button>
+            <button id="music">♫</button>
+        </section>
+    </header>
+    <div id="coverPage">
+        <div id="playerinfo" class="cover">
+            <h2>No. of players</h2>
+                <div><input type="number" id="PNo" value="2" min="2" max="4" placeholder="min. 2 players"></div>
+                <div class="players" >
+                    <h2>Enter Player's name</h2>
+                    <input type="text" class="players" id="P1" placeholder="Player 1" >
+                    <input type="text" class="players" id="P2" placeholder="Player 2" >
+                    <input type="text" class="players player3" id="P3" placeholder="Player 3" >
+                    <input type="text" class="players player4" id="P4" placeholder="Player 4" >
+                </div>
+        <div id="level" class="cover">
+            <h2>Game Difficulty</h2>
+            <button class="levelBtn" id="easy">Easy</button>
+            <button class="levelBtn" id="med">Medium</button>
+            <button class="levelBtn" id="hard">Hard</button>
+        
         </div>
-<div id="level" class="cover">
-    <h2>Game Difficulty</h2>
-    <button class="levelBtn" id="easy">Easy</button>
-    <button class="levelBtn" id="med">Medium</button>
-    <button class="levelBtn" id="hard">Hard</button>
+            <button id="coverStart">START</button>
+        </div>
+        
+        </div>
+    <div id="boardBody">
+    <nav >
+        <!-- <div id="level">
+            <button id="easy">Easy</button>
+            <button id="med">Medium</button>
+            <button id="hard">Hard</button>
+        </div> -->
+ 
+            <button id="home">HOME</button>
+            <button id="start">START</button>
 
+    </nav>
+    <main>
+        <div id="avatar">
+            <div id="win"> 
+                <img id="winpic" src="pictures/win2.png" alt="You win!" >
+            </div>
+            <div id="playersAva">
+                <div>
+                    <img src="pictures\burger.png" alt="Burger Man" class="avatar" id="burger">
+                    <img src="pictures\fries_sunglass.png" alt="Fries Man"  class="avatar" id="fries">
+                    <img src="pictures\pizzaman.png" alt="Pizza Man"  class="avatar player3" id="pizza" >
+                
+                    <img src="pictures\hotdogman.png" alt="Hotdog Man"  class="avatar player4" id="hotdog" >
+                </div>
+            </div>
+        </div>
+        <div id="board"></div>
+        <div id="boardEasy"></div>
+        <div id="boardMed"></div>
+        <div id="boardHard"></div>
+        <div id="message">
+            <div id="player">
+                <!-- <div id="playerinfo">
+                    <div id="playername">
+                        <input type="text" id="P1" placeholder="Player 1" >
+                        <input type="text" id="P2" placeholder="Player 2" >
+                        <input type="text" id="P3" class="player3" placeholder="Player 3" >
+                        <input type="text" id="P4" class="player4" placeholder="Player 4" >
+                    </div>
+                </div> -->
+                <div id="chooseAvatar">
+                    <div id="pBurger" >
+                        <img src="pictures\burger.png" alt="Burger" id="chsburger">
+                        <p class="captions burger"></p>
+                    </div>
+                    <div id="pFries">
+                    <img src="pictures\fries_sunglass.png" alt="Fries" id="chsfries" >
+                    <p class="captions fries"></p>
+                    </div>
+                    <div id="pPizza" >
+                        <img src="pictures\pizzaman.png" alt="Pizza" id="chspizza" class="player3">
+                        <p class="captions pizza player3"></p>
+                    </div>
+                    <div id="pHotdog">
+                            <img src="pictures\hotdogman.png" alt="Hotdog" id="chshotdog" class="player4">
+                            <p class="captions hotdog player4"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="messagesplace"></div>
+            <div id="rollresult">
+                <img src="pictures/dice00.jpg" alt="0 dot" id="diceresult">
+                <button id="dice">ROLL</button>
+            </div>
+        </div>
+    </main>
+        
 </div>
-    <a href="/board"><button id="coverStart">START</button></a>
-</div>
-
-</div>
+</body>
 </html>

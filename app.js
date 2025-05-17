@@ -168,10 +168,30 @@ const clearPlayerPos = () => {
   }
 };
 
-const restartData = () => {
+const homeRestartData = () => {
+  game.players = 2;
   game.message = "";
   game.levelChosen = "";
-  game.levelBoxes = 30;
+  game.levelBoxes = "";
+  game.gameTurn = 0;
+  game.playerTurn = "";
+  game.rotten = [];
+  game.toilet = [];
+  game.chicken = [];
+  game.ladder = [];
+  players.length = 0;
+  playersNo.value = 2;
+  removeBoard();
+
+  winPopup.style.display = "none";
+  diceroll.disabled = false;
+
+  player3hide();
+  player4hide();
+};
+
+const startRestartData = () => {
+  game.message = "";
   game.gameTurn = 0;
   game.playerTurn = "";
   game.rotten = [];
@@ -179,6 +199,7 @@ const restartData = () => {
   game.chicken = [];
   game.ladder = [];
   removeBoard();
+  clearPlayerPos();
 
   winPopup.style.display = "none";
   diceroll.disabled = false;
@@ -186,15 +207,7 @@ const restartData = () => {
 
 const backtoHome = () => {
   //reset prev data and board
-  restartData();
-
-  game.players = 2;
-  player3hide();
-  player4hide();
-
-  players.length = 0;
-  playersNo.value = 2;
-
+  homeRestartData();
   //generate new board
   Cover.style.display = "flex";
   Board.style.display = "none";
@@ -202,10 +215,8 @@ const backtoHome = () => {
 
 const StartBtn = () => {
   //reset prev data and board
-  restartData();
-  clearPlayerPos();
+  startRestartData();
   game.playerTurn = players[0].player;
-
   //generate new board
   generateboard();
   playerAvatar();
@@ -474,6 +485,17 @@ const generateboard = () => {
 
   setTimeout(renderRotten(), 200);
   setTimeout(renderChick(), 200);
+
+  if (game.levelChosen === game.difficultyLevel[1]) {
+    setTimeout(renderRotten(), 200);
+    setTimeout(renderChick(), 200);
+  }
+  if (game.levelChosen === game.difficultyLevel[2]) {
+    setTimeout(renderRotten(), 200);
+    setTimeout(renderChick(), 200);
+    setTimeout(renderRotten(), 200);
+    setTimeout(renderChick(), 200);
+  }
 };
 
 // const playerNameInput = () => {
