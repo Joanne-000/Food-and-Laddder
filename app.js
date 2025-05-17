@@ -345,7 +345,7 @@ const renderAvatar = (playerPos, player) => {
 
 const playerTurn = (curr) => {
   if (players[curr].currPos >= game.levelBoxes) {
-    renderWin();
+    renderWin(curr);
   } else {
     let nextPlayer = game.gameTurn % game.players;
     game.message = "It's " + players[nextPlayer].name + " turn!";
@@ -543,8 +543,8 @@ const renderMessage = () => {
   message.textContent = game.message;
 };
 
-const renderWin = () => {
-  game.message = game.playerTurn + " WIN!!!";
+const renderWin = (curr) => {
+  game.message = players[curr].name + " WIN!!!";
   message.textContent = game.message;
   winPopup.style.display = "flex";
 
