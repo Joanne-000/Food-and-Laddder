@@ -151,7 +151,7 @@ const toMain = () => {
   addPlayerName();
   Cover.style.display = "none";
   Board.style.display = "block";
-
+  infoBtn.style.display = "none";
   //generate new board
   generateboard();
   playerAvatar();
@@ -273,7 +273,7 @@ const gameboardStructure = () => {
 };
 const dice = () => {
   let result = Math.floor(Math.random() * 6) + 1;
-  let picDice = "./pictures/dice0" + result + ".jpg";
+  let picDice = "./assets/dice0" + result + ".jpg";
   let picDiceAlt = result + " dot";
   diceResult.setAttribute("src", picDice);
   diceResult.setAttribute("alt", picDiceAlt);
@@ -417,17 +417,15 @@ const generateRotten = () => {
 const renderRotten = (rottenPos, toiletPos) => {
   let rottenBox = document.getElementById(rottenPos);
   let rottenOnBoard = document.createElement("img");
-  rottenOnBoard.setAttribute("src", "pictures/rottenfood1.jpg");
+  rottenOnBoard.setAttribute("src", "assets/rottenfood1.png");
   rottenOnBoard.setAttribute("alt", "Rottenfood");
-  // rottenOnBoard.setAttribute("id", "Rottenfood");
   rottenOnBoard.classList.add("foods");
   rottenBox.appendChild(rottenOnBoard);
 
   let toiletBox = document.getElementById(toiletPos);
   let toiletOnBoard = document.createElement("img");
-  toiletOnBoard.setAttribute("src", "pictures/toiletbowl.png");
+  toiletOnBoard.setAttribute("src", "assets/toiletbowl.png");
   toiletOnBoard.setAttribute("alt", "Toilet");
-  // toiletOnBoard.setAttribute("id", "Toilet");
   toiletOnBoard.classList.add("foods");
   toiletBox.appendChild(toiletOnBoard);
 };
@@ -435,7 +433,7 @@ const renderRotten = (rottenPos, toiletPos) => {
 const renderChick = (chickPos, ladderPos) => {
   let chickBox = document.getElementById(chickPos);
   let chickOnBoard = document.createElement("img");
-  chickOnBoard.setAttribute("src", "pictures/chicken.png");
+  chickOnBoard.setAttribute("src", "assets/chicken.png");
   chickOnBoard.setAttribute("alt", "Chicken");
   chickOnBoard.setAttribute("id", "Chicken");
   chickOnBoard.classList.add("foods");
@@ -443,7 +441,7 @@ const renderChick = (chickPos, ladderPos) => {
 
   let ladderBox = document.getElementById(ladderPos);
   let ladderOnBoard = document.createElement("img");
-  ladderOnBoard.setAttribute("src", "pictures/powerup.png");
+  ladderOnBoard.setAttribute("src", "assets/powerup.png");
   ladderOnBoard.setAttribute("alt", "Ladder");
   ladderOnBoard.setAttribute("id", "Ladder");
   ladderOnBoard.classList.add("foods");
@@ -458,7 +456,7 @@ const createBurger = (playerPos) => {
   let currBox = document.getElementById(playerPos);
 
   let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/burger.png");
+  currAvaOnBoard.setAttribute("src", "assets/burger.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[0]);
   currAvaOnBoard.setAttribute("id", game.avatar[0]);
   currAvaOnBoard.classList.add("avatar");
@@ -470,7 +468,7 @@ const createBurger = (playerPos) => {
 const createFries = (playerPos) => {
   let currBox = document.getElementById(playerPos);
   let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/fries_sunglass.png");
+  currAvaOnBoard.setAttribute("src", "assets/fries_sunglass.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[1]);
   currAvaOnBoard.setAttribute("id", game.avatar[1]);
   currAvaOnBoard.classList.add("avatar");
@@ -479,7 +477,7 @@ const createFries = (playerPos) => {
 const createPizza = (playerPos) => {
   let currBox = document.getElementById(playerPos);
   let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/pizzaman.png");
+  currAvaOnBoard.setAttribute("src", "assets/pizzaman.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[2]);
   currAvaOnBoard.setAttribute("id", game.avatar[2]);
   currAvaOnBoard.classList.add("avatar");
@@ -488,7 +486,7 @@ const createPizza = (playerPos) => {
 const createHotdog = (playerPos) => {
   let currBox = document.getElementById(playerPos);
   let currAvaOnBoard = document.createElement("img");
-  currAvaOnBoard.setAttribute("src", "pictures/hotdogman.png");
+  currAvaOnBoard.setAttribute("src", "assets/hotdogman.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[3]);
   currAvaOnBoard.setAttribute("id", game.avatar[3]);
   currAvaOnBoard.classList.add("avatar");
@@ -503,7 +501,6 @@ const renderWin = (curr) => {
   game.message = players[curr].name + " WIN!!!";
   message.textContent = game.message;
   winPopup.style.display = "flex";
-
   diceroll.disabled = true;
   return;
 };
