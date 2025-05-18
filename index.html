@@ -37,14 +37,44 @@
             <button class="levelBtn" id="hard">Hard</button>
         
         </div>
-            <button id="coverStart">START</button>
+            <button id="coverStart" disabled>START</button>
         </div>
         
+    </div>
+    <div class="moreInfo" id="infoBoard">
+        <div id="topheader">
+
+        <div>
+            <h2 id="header">GAME RULES</h2>
         </div>
+        <div>
+            <button id="close">X</button>
+        </div>
+    </div>
+  
+        <div>
+            1. Players take turns rolling a six-sided die. <br>
+            <br>
+            2. Wait for your next turn. <br>
+            <br>
+            Chicken (aka. ladder): If you lands on a "Chicken" (a picture of a chicken on the board), you immediately move your piece to the "Muscle chicken" land. <br>
+            <br>
+            <img src="pictures/chicken.png" alt="Chicken" class="foods">
+            <img src="pictures/powerup.png" alt="Ladder" class="foods">
+            <br>
+            Rotten food (aka. snake): If you lands on a "Rotten food" (a picture of a rotten food on the board), you immediately drop your piece down to the "Toilet" land. <br>
+            <br>
+            <img src="pictures/rottenfood1.jpg" alt="Rotten food" class="foods">
+            <img src="pictures/toiletbowl.png" alt="Toilet" class="foods">
+            <br>
+            Reaching the End: The first player to reach or exactly reach the final square wins the game. <br>
+        </div>
+            
+    </div>
     <div id="boardBody">
     <nav >
             <button id="home">HOME</button>
-            <button id="start">START</button>
+            <button id="start">RESTART</button>
     </nav>
     <main>
         <div id="avatar">
@@ -62,9 +92,7 @@
             </div>
         </div>
         <div id="board"></div>
-        <div id="boardEasy"></div>
-        <div id="boardMed"></div>
-        <div id="boardHard"></div>
+
         <div id="message">
             <div id="player">
                 
