@@ -23,13 +23,16 @@ const game = {
   difficultyLevel: ["Easy", "Medium", "Hard"],
   boxNumber: [30, 60, 100],
   boardRow: [6, 6, 10],
+  rottenNchicken: [1, 3, 5],
   isSound: true,
   isMusic: true,
   isWin: true,
   message: "", // revert to default
+  modeChose: "",
   levelChosen: "", // revert to default
   levelBoxes: "", // revert to default
   rowOnBoard: "", // revert to default
+  renderOnBoard: 0,
   gameTurn: 0, // revert to default
   rotten: [], // revert to default
   toilet: [], // revert to default
@@ -277,6 +280,7 @@ const gameboardStructure = () => {
     if (game.levelChosen === game.difficultyLevel[i]) {
       game.levelBoxes = game.boxNumber[i];
       game.rowOnBoard = game.boardRow[i];
+      game.renderOnBoard = game.rottenNchicken[i];
     }
   }
 };
@@ -420,44 +424,105 @@ const randomChicken = () => {
   game.chicken.push(chickPos);
 };
 
-const generateRottenNChicken = () => {
-  randomRotten();
-  randomChicken();
-  if (game.levelChosen === game.difficultyLevel[1]) {
-    randomRotten();
-    randomChicken();
-  }
-  if (game.levelChosen === game.difficultyLevel[2]) {
-    randomRotten();
-    randomRotten();
-    randomChicken();
-    randomChicken();
-  }
+// randomRotten();
+// randomChicken();
+// if (game.levelChosen === game.difficultyLevel[1]) {
+//   randomRotten();
+//   randomChicken();
+// }
+// if (game.levelChosen === game.difficultyLevel[2]) {
+//   randomRotten();
+//   randomRotten();
+//   randomChicken();
+//   randomChicken();
+// }
+
+// for (let i = 0; i < game.rotten.length; i++) {
+//   for (let j = 0; j < game.rotten.length; j++) {
+//     if (game.rotten[i] === game.rotten[j]) {
+//       game.rotten[j] = game.rotten[j] + 1;
+//     }
+//     if (game.chicken[i] === game.chicken[j]) {
+//       game.chicken[j] = game.chicken[j] + 1;
+//     }
+//     if (game.chicken[i] === game.rotten[j]) {
+//       game.chicken[i] = game.chicken[j] + 1;
+//     }
+//   }
+// }
+
+// for (let i = 0; i < game.chicken.length; i++) {
+//   game.toilet[i] = game.rotten[i] - 6;
+//   game.ladder[i] = game.chicken[i] + 8;
+// }
+// for (let i = 0; i < game.chicken.length; i++) {
+//   renderRotten(game.rotten[i], game.toilet[i]);
+//   renderChick(game.chicken[i], game.ladder[i]);
+// }
+
+const checkRottenPos = (rottenPos) => {
+  console.log("generate check", rottenPos);
 
   for (let i = 0; i < game.rotten.length; i++) {
-    for (let j = 0; j < game.rotten.length; j++) {
-      if (game.rotten[i] === game.rotten[j]) {
-        game.rotten[j] = game.rotten[j] + 1;
-      }
-      if (game.chicken[i] === game.chicken[j]) {
-        game.chicken[j] = game.chicken[j] + 1;
-      }
-      if (game.chicken[i] === game.rotten[j]) {
-        game.chicken[i] = game.chicken[j] + 1;
-      }
+    if (rottenPos === game.rotten[i]) {
+      return false;
     }
   }
-
-  for (let i = 0; i < game.chicken.length; i++) {
-    game.toilet[i] = game.rotten[i] - 6;
-    game.ladder[i] = game.chicken[i] + 8;
+  return true;
+};
+const checkChickenPos = (chickPos) => {
+  for (let i = 0; i < game.rotten.length; i++) {
+    if (chickPos === game.rotten[i]) {
+      return false;
+    }
   }
   for (let i = 0; i < game.chicken.length; i++) {
-    renderRotten(game.rotten[i], game.toilet[i]);
+    if (chickPos === game.chicken[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const generateChicken = () => {
+  for (let i = 0; i < game.renderOnBoard; i++) {
+    let chickPos = 0;
+    do {
+      let min = 10;
+      let max = game.levelBoxes - 10;
+      chickPos = Math.floor(Math.random() * (max - min + 1)) + min;
+    } while (!checkChickenPos(chickPos));
+    game.chicken.push(chickPos);
+  }
+
+  for (let i = 0; i < game.renderOnBoard; i++) {
+    game.ladder[i] = game.chicken[i] + 8;
+  }
+  for (let i = 0; i < game.renderOnBoard; i++) {
     renderChick(game.chicken[i], game.ladder[i]);
   }
 };
+console.log("generate out", game.renderOnBoard);
 
+const generateRotten = () => {
+  console.log("generate rotten", game.renderOnBoard);
+  for (let i = 0; i < game.renderOnBoard; i++) {
+    let rottenPos = 0;
+    do {
+      let min = 10;
+      let max = game.levelBoxes - 10;
+      rottenPos = Math.floor(Math.random() * (max - min + 1)) + min;
+    } while (!checkRottenPos(rottenPos));
+    game.rotten.push(rottenPos);
+  }
+
+  for (let i = 0; i < game.renderOnBoard; i++) {
+    game.toilet[i] = game.rotten[i] - 6;
+  }
+  for (let i = 0; i < game.renderOnBoard; i++) {
+    renderRotten(game.rotten[i], game.toilet[i]);
+  }
+};
 const renderRotten = (rottenPos, toiletPos) => {
   let rottenBox = document.getElementById(rottenPos);
   let rottenOnBoard = document.createElement("img");
@@ -560,6 +625,7 @@ diceroll.addEventListener("click", dice);
 
 easy.addEventListener("click", () => {
   game.levelChosen = "Easy";
+  console.log(game.levelChosen);
   gameboardStructure();
 });
 med.addEventListener("click", () => {
@@ -585,8 +651,8 @@ const generateboard = () => {
   // gameBoardEasy();
   rows();
   gameBoard();
-
-  setTimeout(generateRottenNChicken, 100);
+  setTimeout(generateRotten(), 100);
+  setTimeout(generateChicken(), 100);
 };
 // const checkDuplicate = () => {
 //   for (let i = 0; i < game.rotten.length; i++) {
