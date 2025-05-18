@@ -88,3 +88,7 @@ As I did not made reference to anyone's code when developing the game, hence, on
 ## Game Asset Atrributions
 
 The game assets in this project does not belong to me. All rights belong to the original artists and owners.
+
+1. Music track: A Little Explorer by Piki;
+   Source: https://freetouse.com/music;
+   Royalty Free Music for Videos (Safe)

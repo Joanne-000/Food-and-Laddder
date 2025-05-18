@@ -58,7 +58,16 @@ const diceResult = document.getElementById("diceresult");
 const diceroll = document.getElementById("dice");
 const winPopup = document.getElementById("winpic");
 
-const soundEffect = document.getElementById("sound");
+const soundButton = document.getElementById("sound");
+const oopsEffect = new Audio("assets/sounds/oops.mp3");
+oopsEffect.crossOrigin = "anonymous";
+const yayEffect = new Audio("assets/sounds/yay.mp3");
+yayEffect.crossOrigin = "anonymous";
+const winEffect = new Audio("assets/sounds/win.mp3");
+winEffect.crossOrigin = "anonymous";
+const musicButton = document.getElementById("music");
+const music = new Audio("assets/sounds/background_music.mp3");
+winEffect.crossOrigin = "anonymous";
 
 /*----------------------------- Cover -----------------------------*/
 // players number selection
@@ -294,8 +303,12 @@ const updatePlayer = (result) => {
   for (let i = 0; i < game.chicken.length; i++) {
     if (players[curr].currPos === game.rotten[i]) {
       players[curr].currPos = game.toilet[i];
+      oopsEffect.volume = 0.5;
+      oopsEffect.play();
     } else if (players[curr].currPos === game.chicken[i]) {
       players[curr].currPos = game.ladder[i];
+      yayEffect.volume = 0.5;
+      yayEffect.play();
     }
   }
   renderAvatar(players[curr].currPos, players[curr]);
@@ -504,6 +517,9 @@ const renderWin = (curr) => {
   message.textContent = game.message;
   winPopup.style.display = "flex";
   diceroll.disabled = true;
+
+  winEffect.volume = 0.5;
+  winEffect.play();
   return;
 };
 
@@ -540,28 +556,28 @@ hard.addEventListener("click", () => {
   coverStartBtn.disabled = false;
 });
 
-const oopsEffect = new Audio("assets/sounds/oops.mp3");
-oopsEffect.crossOrigin = "anonymous";
-const yayEffect = new Audio("assets/sounds/yay.mp3");
-yayEffect.crossOrigin = "anonymous";
-const winEffect = new Audio("assets/sounds/win.mp3");
-winEffect.crossOrigin = "anonymous";
-
 // const playOops = oopsEffect.play();
-soundEffect.addEventListener("click", () => {
-  oopsEffect.volume = 0.5;
-  oopsEffect.play();
-  yayEffect.volume = 0.5;
-  yayEffect.play();
-  winEffect.volume = 0.5;
-  winEffect.play();
-
-  console.log("check");
+soundButton.addEventListener("click", () => {
+  oopsEffect.muted = true;
+  yayEffect.muted = true;
+  winEffect.muted = true;
 });
+soundButton.addEventListener("click", () => {
+  oopsEffect.muted = true;
+  yayEffect.muted = true;
+  winEffect.muted = true;
+});
+musicButton.addEventListener("click", () => {
+  music.muted = true;
+});
+
 /*-------------------------------- Functions --------------------------------*/
 const cover = () => {
   playerNumber();
   coverStartBtn.addEventListener("click", toMain);
+  music.play();
+  music.loop = true;
+  music.volume = 0.5;
 };
 cover();
 
