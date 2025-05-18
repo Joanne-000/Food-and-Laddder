@@ -8,8 +8,6 @@ const game = {
   boxNumber: [30, 60, 100],
   boardRow: [6, 6, 10],
   rottenNchicken: [1, 3, 5],
-  isSound: true,
-  isMusic: true,
   message: "", // revert to default
   modeChose: "", // revert to default
   levelChosen: "", // revert to default
@@ -168,6 +166,7 @@ const toMain = () => {
   playerAvatar();
   game.message = "Game start! " + players[0].name + ", your turn.";
   renderMessage();
+  music.play();
 };
 
 // for game reset
@@ -575,9 +574,6 @@ musicButton.addEventListener("click", () => {
 const cover = () => {
   playerNumber();
   coverStartBtn.addEventListener("click", toMain);
-  music.play();
-  music.loop = true;
-  music.volume = 0.5;
 };
 cover();
 
