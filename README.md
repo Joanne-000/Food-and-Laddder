@@ -1,4 +1,4 @@
-# Developing a Game - Foods and Ladder
+# Developing a Game - Food & Ladder
 
 ## Project Brief
 
@@ -84,6 +84,8 @@ As I did not made reference to anyone's code when developing the game, hence, on
 1. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/do...while
 
 2. https://www.google.com/search?q=how+to+code+if+i+want+the+functions+to+run+if+the+function+return+is+false+in+javascript&sca_esv=d5c9e331663ca2e4&rlz=1C1CHBF_en-GBSG1158SG1158&ei=1aMpaNbCMOqhseMPwNi6kAM&ved=0ahUKEwiWgbSB1qyNAxXqUGwGHUCsDjIQ4dUDCBA&oq=how+to+code+if+i+want+the+functions+to+run+if+the+function+return+is+false+in+javascript&gs_lp=Egxnd3Mtd2l6LXNlcnAiWGhvdyB0byBjb2RlIGlmIGkgd2FudCB0aGUgZnVuY3Rpb25zIHRvIHJ1biBpZiB0aGUgZnVuY3Rpb24gcmV0dXJuIGlzIGZhbHNlIGluIGphdmFzY3JpcHRI6OcBUMYUWNHJAXAEeAGQAQCYAccBoAHADqoBBDE2Lja4AQzIAQD4AQGYAhGgAuYLwgIKEAAYsAMY1gQYR8ICBRAAGO8FwgIIEAAYgAQYogTCAgoQIRigARjDBBgKwgIIECEYoAEYwwTCAgQQIRgKmAMAiAYBkAYEkgcGMTIuNC4xoAeSTrIHBjEwLjQuMbgH4AvCBwYxLjE0LjLIByA&sclient=gws-wiz-serp
+
+3. https://developer.chrome.com/blog/autoplay/
 
 ## Game Asset Atrributions
 
