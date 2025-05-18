@@ -58,6 +58,8 @@ const diceResult = document.getElementById("diceresult");
 const diceroll = document.getElementById("dice");
 const winPopup = document.getElementById("winpic");
 
+const soundEffect = document.getElementById("sound");
+
 /*----------------------------- Cover -----------------------------*/
 // players number selection
 const player3display = () => {
@@ -538,6 +540,24 @@ hard.addEventListener("click", () => {
   coverStartBtn.disabled = false;
 });
 
+const oopsEffect = new Audio("assets/sounds/oops.mp3");
+oopsEffect.crossOrigin = "anonymous";
+const yayEffect = new Audio("assets/sounds/yay.mp3");
+yayEffect.crossOrigin = "anonymous";
+const winEffect = new Audio("assets/sounds/win.mp3");
+winEffect.crossOrigin = "anonymous";
+
+// const playOops = oopsEffect.play();
+soundEffect.addEventListener("click", () => {
+  oopsEffect.volume = 0.5;
+  oopsEffect.play();
+  yayEffect.volume = 0.5;
+  yayEffect.play();
+  winEffect.volume = 0.5;
+  winEffect.play();
+
+  console.log("check");
+});
 /*-------------------------------- Functions --------------------------------*/
 const cover = () => {
   playerNumber();
