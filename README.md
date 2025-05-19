@@ -4,14 +4,12 @@
 
 ### MVP - Minimum Viable Product
 
-Use Javascript DOM manipulation techniques
-Have a win/lose condition.
-Built with HTML, CSS and JavaScript
-UI/UX: Use flexbox/ Grid/ CSS framework for page layout design
-Git and GitHub: Hosted on Github pages and commits to Github frequently
-README: A README.md file with explanations of the technologies used, the approach taken, a link to your live site, installation instructions, planned future enhancements, etc.
-Be displayed in the browser
-Have some kind of user interaction via mouseclick or keypress
+- Use Javascript DOM manipulation techniques
+- Built with HTML, CSS and JavaScript
+- UI/UX: Use flexbox/ Grid/ CSS framework for page layout design
+- Git and GitHub: Hosted on Github pages and commits to Github frequently
+- Be displayed in the browser
+- Have a win/lose condition.
 
 ## Timeframe
 
@@ -34,8 +32,8 @@ In this game, you are allowed to choose the number of players, input your name a
 
 ## WireFrame
 
-Before coding the game, I planned out the design and the possible logic for the game. This helps to break down the project into manageable parts and also plan out the possible codes/functions needed.
-<img src="assets\FoodLadder(plan).jpg" alt="Foods and Ladder planning" style="max-width:100%;">
+Before coding the game, I planned out the design and the possible logic for the game. This helps to break down the project into manageable parts and also plan out the possible codes/functions needed.<br>
+<img src="assets\FoodLadder(plan).jpg" alt="Foods and Ladder planning"  width="70%" height=auto>
 
 ## How To Play
 
@@ -48,10 +46,10 @@ Before coding the game, I planned out the design and the possible logic for the 
 6. Ladders and traps:
 
    - Chicken (aka. ladder): If your avatar land on a "Chicken" (a picture of a chicken on the board), it will be immediately move to the "Muscle chicken" land.<br>
-     <img src="assets/chicken.png" alt="Chicken" class="foods" style="max-width:10%;"> -- climb up to -->
-     <img src="assets/powerup.png" alt="Ladder" class="foods" style="max-width:10%;">
+     <img src="assets/chicken.png" alt="Chicken" class="foods" width="50" height="50"> -- climb up to -->
+     <img src="assets/powerup.png" alt="Ladder" class="foods" width="50" height="50">
    - Rotten food (aka. snake): If your avatar land on a "Rotten food" (a picture of a rotten food on the board), it will be immediately drop down to the "Toilet" land.<br>
-     <img src="assets/toiletbowl.png" alt="Toilet" class="foods" style="max-width:10%;"> <-- fall back to -- <img src="assets/rottenfood1.png" alt="Rotten food" class="foods" style="max-width:10%;">
+     <img src="assets/toiletbowl.png" alt="Toilet" class="foods" width="50" height="50"> <-- fall back to -- <img src="assets/rottenfood1.png" alt="Rotten food" class="foods" width="50" height="50">
 
 7. How to win: The first player to reach the final square wins the game.
 
