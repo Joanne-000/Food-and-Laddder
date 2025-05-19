@@ -8,6 +8,8 @@ const game = {
   boxNumber: [30, 60, 100],
   boardRow: [6, 6, 10],
   rottenNchicken: [1, 3, 5],
+  IsSound: true,
+  IsMusic: true,
   message: "", // revert to default
   modeChose: "", // revert to default
   levelChosen: "", // revert to default
@@ -73,13 +75,13 @@ const player3display = () => {
   P3.style.display = "flex";
   chspizza.style.display = "inline-block";
   pizzaAva.style.display = "flex";
-  P3pizza.style.display = "flex";
+  P3pizza.style.display = "block";
 };
 const player4display = () => {
   P4.style.display = "flex";
   chshotdog.style.display = "inline-block";
   hotdogAva.style.display = "flex";
-  P4hotdog.style.display = "flex";
+  P4hotdog.style.display = "block";
 };
 const player3hide = () => {
   P3.style.display = "none";
@@ -166,7 +168,7 @@ const toMain = () => {
   playerAvatar();
   game.message = "Game start! " + players[0].name + ", your turn.";
   renderMessage();
-  music.play();
+  musicOn();
 };
 
 // for game reset
@@ -224,6 +226,7 @@ const backtoHome = () => {
   //generate new board
   Cover.style.display = "flex";
   Board.style.display = "none";
+  infoBtn.style.display = "flex";
 };
 
 const restartBtn = () => {
@@ -407,7 +410,6 @@ const generateChicken = () => {
 };
 
 const generateRotten = () => {
-  console.log("generate rotten", game.renderOnBoard);
   for (let i = 0; i < game.renderOnBoard; i++) {
     let rottenPos = 0;
     do {
@@ -425,7 +427,16 @@ const generateRotten = () => {
     renderRotten(game.rotten[i], game.toilet[i]);
   }
 };
-
+const musicOn = () => {
+  game.IsMusic = true;
+  music.play();
+  music.muted = false;
+  music.loop = true;
+};
+const musicOff = () => {
+  game.IsMusic = false;
+  music.muted = true;
+};
 /*---------------------------- Render Functions --------------------------------*/
 
 const renderRotten = (rottenPos, toiletPos) => {
@@ -463,20 +474,12 @@ const renderChick = (chickPos, ladderPos) => {
 };
 
 const createBurger = (playerPos) => {
-  console.log("gameboard", gameboard);
-  console.log("playerPos", player);
-  console.log("player.currPos", playerPos);
-
   let currBox = document.getElementById(playerPos);
-
   let currAvaOnBoard = document.createElement("img");
   currAvaOnBoard.setAttribute("src", "assets/burger.png");
   currAvaOnBoard.setAttribute("alt", game.avatar[0]);
   currAvaOnBoard.setAttribute("id", game.avatar[0]);
   currAvaOnBoard.classList.add("avatar");
-  console.log("currBox", currBox);
-
-  console.log("playerPos", players);
   currBox.appendChild(currAvaOnBoard);
 };
 const createFries = (playerPos) => {
@@ -540,7 +543,6 @@ exitBtn.addEventListener("click", () => {
 });
 easy.addEventListener("click", () => {
   game.levelChosen = "Easy";
-  console.log(game.levelChosen);
   gameboardStructure();
   coverStartBtn.disabled = false;
 });
@@ -557,17 +559,25 @@ hard.addEventListener("click", () => {
 
 // const playOops = oopsEffect.play();
 soundButton.addEventListener("click", () => {
-  oopsEffect.muted = true;
-  yayEffect.muted = true;
-  winEffect.muted = true;
+  if (game.IsSound === true) {
+    game.IsSound = false;
+    oopsEffect.muted = true;
+    yayEffect.muted = true;
+    winEffect.muted = true;
+  } else {
+    game.IsSound = true;
+    oopsEffect.muted = false;
+    yayEffect.muted = false;
+    winEffect.muted = false;
+  }
 });
-soundButton.addEventListener("click", () => {
-  oopsEffect.muted = true;
-  yayEffect.muted = true;
-  winEffect.muted = true;
-});
+
 musicButton.addEventListener("click", () => {
-  music.muted = true;
+  if (game.IsMusic === true) {
+    musicOff();
+  } else {
+    musicOn();
+  }
 });
 
 /*-------------------------------- Functions --------------------------------*/
