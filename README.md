@@ -24,9 +24,9 @@
 
 ## Description
 
-This is a classic Snake and Ladder game with food theme on it. The game was designed and implemented using HTML, CSS, and Javascript while attending the Software Engineering bootcamp at General Assembly.
+This is a classic Snake and Ladder game with food theme on it. The game is designed and implemented using HTML, CSS, and Javascript during Software Engineering bootcamp at General Assembly.
 
-I chose to recreate this game as this was one of the traditional board games that I used to play when i was young, and it can only be played when friends are around. Hence, i decided to take this opportunity to recreate this game as an online platform so that I can play with friends remotely.
+I chose to recreate this game as this was one of the traditional board games that I used to play when I was young, and it can only be played when friends are around. Hence, I decided to take this opportunity to recreate this game as an online platform so that I can play with friends remotely.
 
 In this game, you are allowed to choose the number of players, input your name ang select the difficulty mode of the game. By increasing the level of difficulty, there will be more TRAPS and LADDERS render on the board.<br>
 <img src="assets/intro-page.png" alt="Intro-page"  width="60%" height=auto><br>
