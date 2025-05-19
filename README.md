@@ -15,7 +15,7 @@ Have some kind of user interaction via mouseclick or keypress
 
 ## Timeframe
 
-1-2 weeks
+1 weeks
 
 ## Technologies & Tools Used
 
