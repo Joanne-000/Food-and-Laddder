@@ -72,11 +72,10 @@ Although snake and ladder is not a very complicated game to develop, but for a b
 As JavaScript is relatively new to me, and some of the features that planned during the brainstorming phase did not incorporate into the current version. If there would be a future development on this game, I would like to improve and implement the following:
 
 1. Refactoring the code in a shorter and more independent way.
-2. Adding sound effects and background music for the game
-3. Players will need to roll the exact number to get you to the last land. If the player rolls a number that is higher than needed to land the last land, player will bounce back accordingly.
-4. To add more dice for bigger board
-5. Players are allowed to choose their own avatar instead of system fixed avatar
-6. Multiple players are allowed to join the game using different devices
+2. Players will need to roll the exact number to get you to the last land. If the player rolls a number that is higher than needed to land the last land, player will bounce back accordingly.
+3. To add more dice for bigger board
+4. Players are allowed to choose their own avatar instead of system fixed avatar
+5. Multiple players are allowed to join the game using different devices
 
 ## References
 
