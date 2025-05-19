@@ -94,3 +94,5 @@ The game assets in this project does not belong to me. All rights belong to the 
 1. Music track: A Little Explorer by Piki;
    Source: https://freetouse.com/music;
    Royalty Free Music for Videos (Safe)
+
+2. CSS Frameworks; Source: https://pure-css.github.io/
