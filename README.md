@@ -28,12 +28,14 @@ This is a classic Snake and Ladder game with food theme on it. The game was desi
 
 I chose to recreate this game as this was one of the traditional board games that I used to play when i was young, and it can only be played when friends are around. Hence, i decided to take this opportunity to recreate this game as an online platform so that I can play with friends remotely.
 
-In this game, you are allowed to choose the number of players, input your name ang select the difficulty mode of the game. By increasing the level of difficulty, there will be more TRAPS and LADDERS render on the board.
+In this game, you are allowed to choose the number of players, input your name ang select the difficulty mode of the game. By increasing the level of difficulty, there will be more TRAPS and LADDERS render on the board.<br>
+<img src="assets/intro-page.png" alt="Intro-page"  width="60%" height=auto><br>
+<img src="assets/game-sample.png" alt="game-sample"  width="60%" height=auto>
 
 ## WireFrame
 
 Before coding the game, I planned out the design and the possible logic for the game. This helps to break down the project into manageable parts and also plan out the possible codes/functions needed.<br>
-<img src="assets\FoodLadder(plan).jpg" alt="Foods and Ladder planning"  width="70%" height=auto>
+<img src="assets/FoodLadder(plan).jpg" alt="Foods and Ladder planning"  width="70%" height=auto>
 
 ## How To Play
 
@@ -51,7 +53,8 @@ Before coding the game, I planned out the design and the possible logic for the 
    - Rotten food (aka. snake): If your avatar land on a "Rotten food" (a picture of a rotten food on the board), it will be immediately drop down to the "Toilet" land.<br>
      <img src="assets/toiletbowl.png" alt="Toilet" class="foods" width="50" height="50"> <-- fall back to -- <img src="assets/rottenfood1.png" alt="Rotten food" class="foods" width="50" height="50">
 
-7. How to win: The first player to reach the final square wins the game.
+7. How to win: The first player to reach the final square wins the game.<br>
+   <img src="assets/win-sample.png" alt="win-sample"  width="60%" height=auto>
 
 ## Key Learning
 

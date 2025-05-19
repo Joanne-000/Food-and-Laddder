@@ -226,7 +226,7 @@ const backtoHome = () => {
   //generate new board
   Cover.style.display = "flex";
   Board.style.display = "none";
-  infoBtn.style.display = "flex";
+  infoBtn.style.display = "inline-block";
 };
 
 const restartBtn = () => {
